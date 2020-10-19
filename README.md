@@ -10,7 +10,7 @@ Badges
 
 ## Description
 
-`cgo-ase` is a driver for the [`databasq/sql`][pkg-database-sql] package
+`cgo-ase` is a driver for the [`database/sql`][pkg-database-sql] package
 of [Go (golang)][go] to provide access to SAP ASE instances.
 It is delivered as Go module.
 
@@ -19,7 +19,7 @@ a relational model database server originally known as Sybase SQL
 Server.
 
 [cgo][cgo] enables Go to call C code and to link against shared objects.
-A pure go implementation can be found [here][purego]
+A pure go implementation can be found [here][purego].
 
 ## Requirements
 
@@ -36,11 +36,17 @@ installation path.
 
 The headers are provided at `includes`.
 
-TODO: Refer to go-dblib
+Furthermore, the shared library [`go-dblib`][go-dblib] is required.
+It contains several packages, e.g. `dsn` to get and parse DSN-information
+(see [Configuration: Data Source Names](#data-source-names)).
 
 ## Download
 
-The packages in this repo can be `go get` and imported as usual.
+The packages in this repo can be `go get` and imported as usual, e.g.:
+
+```sh
+go get github.com/SAP/cgo-ase
+```
 
 For specifics on how to use `database/sql` please see the
 [documentation][pkg-database-sql].
@@ -54,8 +60,7 @@ package main
 
 import (
     "database/sql"
-    "github.com/SAP/cgo-ase"
-	"github.com/SAP/go-dblib"
+    _ "github.com/SAP/cgo-ase"
 )
 
 func main() {
@@ -93,11 +98,6 @@ LD_LIBRARY_PATH="/path/to/OCS/lib" ./cmd
 ### Examples
 
 More examples can be found in the folder `examples`.
-
-### Unit tests
-
-Unit tests for the packages are included in their respective directories
-and can be run using `go test`.
 
 ### Integration tests
 
@@ -138,7 +138,7 @@ The simple DSN is a key/value string: `username=user password=pass host=hostname
 
 Values with spaces must be quoted using single or double quotes.
 
-Each member of `dblib.libdsn.DsnInfo` can be set using any of their
+Each member of `dblib.dsn.DsnInfo` can be set using any of their
 possible json tags. E.g. `.Host` will receive the values from the keys
 `host` and `hostname`.
 
@@ -153,7 +153,7 @@ will only honour the last given value for a property.
 
 #### Connector
 
-As an alternative to the string DSN `NewConnector` accept a `libdsn.DsnInfo`
+As an alternative to the string DSN `NewConnector` accept a `dsn.DsnInfo`
 directly and return a `driver.Connector`, which can be passed to `sql.OpenDB`:
 
 ```go
@@ -162,12 +162,12 @@ package main
 import (
     "database/sql"
 
-    "github.com/SAP/go-dblib/libdsn"
     "github.com/SAP/cgo-ase"
+    "github.com/SAP/go-dblib/dsn"
 )
 
 func main() {
-    d := libdsn.NewDsnInfo()
+    d := dsn.NewDsnInfo()
     d.Host = "hostname"
     d.Port = "4901"
     d.Username = "user"
@@ -227,10 +227,6 @@ When set to any other string the callback will not be set.
 Regarding the limitations of prepared statements/dynamic SQL please see
 [the Client-Library documentation](https://help.sap.com/viewer/71b47f4a8269411da6d15ed25f5d39b3/LATEST/en-US/bfc531e46db61014bf8f040071e613d7.html).
 
-The Client-Library documentation applies to both the cgo and the pure go
-implementation as these restrictions are imposed by the implementation
-of dynamic SQL on the server side.
-
 ### Unsupported ASE data types
 
 Currently the following data types are not supported:
@@ -266,11 +262,12 @@ For details on how to contribute please see the
 ## License
 
 Copyright (c) 2019-2020 SAP SE or an SAP affiliate company. All rights reserved.
-This file is licensed under the Apache License 2.0 except as noted otherwise in the [LICENSE file](LICENSE)
+This file is licensed under the Apache License 2.0 except as noted otherwise in the [LICENSE file](LICENSE).
 
 [cgo]: https://golang.org/cmd/cgo
 [cl-sdk-install-guide]: https://help.sap.com/viewer/882ef48c7e9c4d6e845d98f34378db40/16.0.3.2/en-US
 [go]: https://golang.org/
+[go-dblib]: https://www.github.com/SAP/go-dblib
 [issues]: https://github.com/SAP/cgo-ase/issues
 [pkg-database-sql]: https://golang.org/pkg/database/sql
 [purego]: https://github.com/SAP/go-ase
