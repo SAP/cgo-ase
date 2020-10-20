@@ -6,7 +6,10 @@ SPDX-License-Identifier: Apache-2.0
 
 # cgo-ase
 
-Badges
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/SAP/cgo-ase)](https://pkg.go.dev/github.com/SAP/cgo-ase)
+[![Go Report Card](https://goreportcard.com/badge/github.com/SAP/cgo-ase)](https://goreportcard.com/report/github.com/SAP/cgo-ase)
+[![REUSE
+status](https://api.reuse.software/badge/github.com/SAP/cgo-ase)](https://api.reuse.software/info/github.com/SAP/cgo-ase)
 
 ## Description
 
