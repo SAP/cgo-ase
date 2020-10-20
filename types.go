@@ -5,7 +5,7 @@
 package ase
 
 import (
-	"github.com/SAP/go-dblib/types"
+	"github.com/SAP/go-dblib/asetypes"
 )
 
 //go:generate go run ./gen_types.go
@@ -20,75 +20,75 @@ func (t ASEType) String() string {
 	return s
 }
 
-// ToDataType returns the equivalent types.DataType for an ASEType.
-func (t ASEType) ToDataType() types.DataType {
+// ToDataType returns the equivalent asetypes.DataType for an ASEType.
+func (t ASEType) ToDataType() asetypes.DataType {
 	switch t {
 	case BIGDATETIME:
-		return types.BIGDATETIMEN
+		return asetypes.BIGDATETIMEN
 	case BIGINT:
-		return types.INT8
+		return asetypes.INT8
 	case BIGTIME:
-		return types.BIGTIMEN
+		return asetypes.BIGTIMEN
 	case BINARY:
-		return types.BINARY
+		return asetypes.BINARY
 	case BIT:
-		return types.BIT
+		return asetypes.BIT
 	case BLOB:
-		return types.BLOB
+		return asetypes.BLOB
 	case BOUNDARY:
-		return types.BOUNDARY
+		return asetypes.BOUNDARY
 	case CHAR:
-		return types.CHAR
+		return asetypes.CHAR
 	case DATE:
-		return types.DATE
+		return asetypes.DATE
 	case DATETIME:
-		return types.DATETIME
+		return asetypes.DATETIME
 	case DATETIME4:
-		return types.SHORTDATE
+		return asetypes.SHORTDATE
 	case DECIMAL:
-		return types.DECN
+		return asetypes.DECN
 	case FLOAT:
-		return types.FLT8
+		return asetypes.FLT8
 	case IMAGE:
-		return types.IMAGE
+		return asetypes.IMAGE
 	case IMAGELOCATOR:
 		// TODO
 		return 0
 	case INT:
-		return types.INT4
+		return asetypes.INT4
 	case LONG:
-		return types.INT8
+		return asetypes.INT8
 	case LONGBINARY:
-		return types.LONGBINARY
+		return asetypes.LONGBINARY
 	case LONGCHAR:
-		return types.LONGCHAR
+		return asetypes.LONGCHAR
 	case MONEY:
-		return types.MONEY
+		return asetypes.MONEY
 	case MONEY4:
-		return types.SHORTMONEY
+		return asetypes.SHORTMONEY
 	case NUMERIC:
-		return types.NUMN
+		return asetypes.NUMN
 	case REAL:
-		return types.FLT4
+		return asetypes.FLT4
 	case SENSITIVITY:
-		return types.SENSITIVITY
+		return asetypes.SENSITIVITY
 	case SMALLINT:
-		return types.INT2
+		return asetypes.INT2
 	case TEXT:
-		return types.TEXT
+		return asetypes.TEXT
 	case TEXTLOCATOR:
 		// TODO
 		return 0
 	case TIME:
-		return types.TIME
+		return asetypes.TIME
 	case TINYINT:
-		return types.INT1
+		return asetypes.INT1
 	case UBIGINT:
-		return types.UINT8
+		return asetypes.UINT8
 	case UINT:
-		return types.UINT4
+		return asetypes.UINT4
 	case UNICHAR, UNITEXT:
-		return types.UNITEXT
+		return asetypes.UNITEXT
 	case UNITEXTLOCATOR:
 		// TODO
 		return 0
@@ -96,15 +96,15 @@ func (t ASEType) ToDataType() types.DataType {
 		// TODO
 		return 0
 	case USHORT, USMALLINT:
-		return types.UINT2
+		return asetypes.UINT2
 	case VARBINARY:
-		return types.VARBINARY
+		return asetypes.VARBINARY
 	case VARCHAR:
-		return types.VARCHAR
+		return asetypes.VARCHAR
 	case VOID:
-		return types.VOID
+		return asetypes.VOID
 	case XML:
-		return types.XML
+		return asetypes.XML
 	default:
 		return 0
 	}

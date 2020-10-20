@@ -15,8 +15,8 @@ import (
 	"unsafe"
 
 	"github.com/SAP/go-dblib"
+	"github.com/SAP/go-dblib/asetypes"
 	"github.com/SAP/go-dblib/dsn"
-	"github.com/SAP/go-dblib/types"
 )
 
 // connection is the struct which represents a database connection.
@@ -210,7 +210,7 @@ func (conn *Connection) QueryContext(ctx context.Context, query string, args []d
 }
 
 func (conn *Connection) CheckNamedValue(nv *driver.NamedValue) error {
-	v, err := types.DefaultValueConverter.ConvertValue(nv.Value)
+	v, err := asetypes.DefaultValueConverter.ConvertValue(nv.Value)
 	if err != nil {
 		return err
 	}

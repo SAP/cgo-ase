@@ -67,7 +67,7 @@ func (conn *Connection) BeginTx(ctx context.Context, opts driver.TxOptions) (dri
 }
 
 func (conn *Connection) beginTx(opts driver.TxOptions) (driver.Tx, error) {
-	isolationLevel, err := dblib.IsolationLevelFromGo(sql.IsolationLevel(opts.Isolation))
+	isolationLevel, err := dblib.ASEIsolationLevelFromGo(sql.IsolationLevel(opts.Isolation))
 	if err != nil {
 		return nil, err
 	}

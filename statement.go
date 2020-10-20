@@ -19,7 +19,7 @@ import (
 	"unsafe"
 
 	"github.com/SAP/go-dblib"
-	"github.com/SAP/go-dblib/types"
+	"github.com/SAP/go-dblib/asetypes"
 )
 
 type statement struct {
@@ -173,8 +173,8 @@ func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Row
 
 			csDec := (*C.CS_DECIMAL)(C.calloc(1, C.sizeof_CS_DECIMAL))
 			defer C.free(unsafe.Pointer(csDec))
-			csDec.precision = (C.CS_BYTE)(arg.Value.(*types.Decimal).Precision)
-			csDec.scale = (C.CS_BYTE)(arg.Value.(*types.Decimal).Scale)
+			csDec.precision = (C.CS_BYTE)(arg.Value.(*asetypes.Decimal).Precision)
+			csDec.scale = (C.CS_BYTE)(arg.Value.(*asetypes.Decimal).Scale)
 
 			for i, b := range bs {
 				csDec.array[i] = (C.CS_BYTE)(b)

@@ -78,7 +78,7 @@ func main() {
 	}
 	typeSlice.Sort()
 
-	// Write types.go
+	// Write typeConsts.go
 	buf := bytes.Buffer{}
 
 	buf.WriteString("package ase\n\n")
@@ -105,9 +105,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Write result to types.go
+	// Write result to typeConsts.go
 	if err := ioutil.WriteFile("typeConsts.go", formattedBuf, 0644); err != nil {
-		log.Printf("Writing generated code to types.go failed: %v", err)
+		log.Printf("Writing generated code to typeConsts.go failed: %v", err)
 		os.Exit(1)
 	}
 }
