@@ -90,13 +90,14 @@ Contributions must fulfill following requirements to be accepted:
    explained in [effective go][effective-go]. The following points
    may formulate statements from effective go more strongly.
 2. All exported functions must be documented.
-3. Code that can be shared between the [cgo][cgo] and [go][purego] implementations must
+3. Code that can be shared between the [`cgo-ase`][cgo-ase] and [`go-ase`][go-ase] implementations must
    be placed inside the [go-dblib][go-dblib] module.
 4. Tests for new features or bugfixes must be added.
 
-[cgo]: https://github.com/SAP/cgo-ase
+[cgo-ase]: https://github.com/SAP/cgo-ase
 [dco]: https://developercertificate.org/
 [effective-go]: https://golang.org/doc/effective_go.html
+[go-ase]: https://github.com/SAP/go-ase
 [go-dblib]: https://github.com/SAP/go-dblib
 [issues]: https://github.com/SAP/cgo-ase/issues
 [purego]: https://github.com/SAP/go-ase

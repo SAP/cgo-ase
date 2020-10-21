@@ -89,13 +89,13 @@ shared objects required for the cgo driver.
 ### Compilation
 
 ```sh
-CGO_LDFLAGS="-L/path/to/OCS/lib" go build -o cmd ./
+CGO_LDFLAGS="-L/path/to/OCS/lib" go build -o cgoase ./cmd/cgoase/
 ```
 
 ### Execution
 
 ```sh
-LD_LIBRARY_PATH="/path/to/OCS/lib" ./cmd
+LD_LIBRARY_PATH="/path/to/OCS/lib" ./cgoase
 ```
 
 ### Examples
@@ -156,7 +156,7 @@ will only honour the last given value for a property.
 
 #### Connector
 
-As an alternative to the string DSN `NewConnector` accept a `dsn.DsnInfo`
+As an alternative to the string DSN `ase.NewConnector` accept a `dsn.DsnInfo`
 directly and return a `driver.Connector`, which can be passed to `sql.OpenDB`:
 
 ```go
