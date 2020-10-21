@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2020 SAP SE
+#
+# SPDX-License-Identifier: Apache-2.0
+
+---
+version: 2
+
+updates:
+
+  - package-ecosystem: gomod
+    directory: "/"
+    schedule:
+      interval: weekly
+    reviewers:
+      - "SAP/go-ase-team"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    reviewers:
+      - "SAP/go-ase-team"
