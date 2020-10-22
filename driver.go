@@ -21,24 +21,25 @@ import (
 	"github.com/SAP/go-dblib/dsn"
 )
 
-//DriverName is the driver name to use with sql.Open for ase databases.
-const DriverName = "ase"
-
-// drv is the struct on which we later call Open() to get a connection.
-type aseDrv struct{}
-
+// Interface satisfaction checks.
 var (
-	// Interface satisfaction checks
 	_   driver.Driver = (*aseDrv)(nil)
 	drv               = &aseDrv{}
 )
+
+//DriverName is the driver name to use with sql.Open for ase databases.
+const DriverName = "ase"
+
+// aseDrv is the struct on which we later call Open() to get a connection.
+type aseDrv struct{}
 
 func init() {
 	sql.Register(DriverName, drv)
 }
 
-func (d *aseDrv) Open(dsnString string) (driver.Conn, error) {
-	dsnInfo, err := dsn.ParseDSN(dsnString)
+// Open implements the driver.Driver interface.
+func (d *aseDrv) Open(name string) (driver.Conn, error) {
+	dsnInfo, err := dsn.ParseDSN(name)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to parse DSN: %w", err)
 	}
@@ -46,6 +47,7 @@ func (d *aseDrv) Open(dsnString string) (driver.Conn, error) {
 	return NewConnection(nil, dsnInfo)
 }
 
+// OpenConnector implements the driver.DriverContext interface.
 func (d *aseDrv) OpenConnector(dsnString string) (driver.Connector, error) {
 	dsnInfo, err := dsn.ParseDSN(dsnString)
 	if err != nil {

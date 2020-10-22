@@ -9,7 +9,7 @@ import "sync"
 // MessageRecorder can be utilized to record non-SQL responses
 // from the server.
 //
-// See the example examples/cgo/recorder on how to utilize the
+// See the example examples/recorder on how to utilize the
 // MessageRecorder.
 type MessageRecorder struct {
 	Messages []string

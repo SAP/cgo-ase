@@ -76,13 +76,11 @@ func (context *csContext) dropConn() error {
 // init allocates and initializes the context.
 // If a DSN is set the DSN options will be applied.
 func (context *csContext) init() error {
-	retval := C.cs_ctx_alloc(C.CS_CURRENT_VERSION, &context.ctx)
-	if retval != C.CS_SUCCEED {
+	if retval := C.cs_ctx_alloc(C.CS_CURRENT_VERSION, &context.ctx); retval != C.CS_SUCCEED {
 		return makeError(retval, "C.cs_ctx_alloc failed")
 	}
 
-	retval = C.ct_init(context.ctx, C.CS_CURRENT_VERSION)
-	if retval != C.CS_SUCCEED {
+	if retval := C.ct_init(context.ctx, C.CS_CURRENT_VERSION); retval != C.CS_SUCCEED {
 		if err := context.drop(); err != nil {
 			return err
 		}
@@ -98,13 +96,11 @@ func (context *csContext) init() error {
 
 // drop deallocates the context.
 func (context *csContext) drop() error {
-	retval := C.ct_exit(context.ctx, C.CS_UNUSED)
-	if retval != C.CS_SUCCEED {
+	if retval := C.ct_exit(context.ctx, C.CS_UNUSED); retval != C.CS_SUCCEED {
 		return makeError(retval, "C.ct_exit failed, has results pending")
 	}
 
-	retval = C.cs_ctx_drop(context.ctx)
-	if retval != C.CS_SUCCEED {
+	if retval := C.cs_ctx_drop(context.ctx); retval != C.CS_SUCCEED {
 		return makeError(retval, "C.cs_ctx_drop failed")
 	}
 
@@ -115,13 +111,11 @@ func (context *csContext) drop() error {
 // applyDSN applies the relevant connection properties of a DSN to the
 // context.
 func (context *csContext) applyDSN(dsn *dsn.Info) error {
-	retval := C.ct_callback(context.ctx, nil, C.CS_SET, C.CS_CLIENTMSG_CB, C.ct_callback_client_message)
-	if retval != C.CS_SUCCEED {
+	if retval := C.ct_callback(context.ctx, nil, C.CS_SET, C.CS_CLIENTMSG_CB, C.ct_callback_client_message); retval != C.CS_SUCCEED {
 		return makeError(retval, "C.ct_callback failed for client messages")
 	}
 
-	retval = C.ct_callback(context.ctx, nil, C.CS_SET, C.CS_SERVERMSG_CB, C.ct_callback_server_message)
-	if retval != C.CS_SUCCEED {
+	if retval := C.ct_callback(context.ctx, nil, C.CS_SET, C.CS_SERVERMSG_CB, C.ct_callback_server_message); retval != C.CS_SUCCEED {
 		return makeError(retval, "C.ct_callback failed for server messages")
 	}
 

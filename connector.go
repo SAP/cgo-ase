@@ -12,15 +12,16 @@ import (
 	"github.com/SAP/go-dblib/dsn"
 )
 
+// Interface satisfaction checks.
 var _ driver.Connector = (*connector)(nil)
 
+// connector implements the driver.Connector interface.
 type connector struct {
 	driverCtx *csContext
 	dsn       *dsn.Info
 }
 
-// NewConnector returns a driver.Connector which can be passed to
-// sql.OpenDB.
+// NewConnector returns a new connector with the passed configuration.
 func NewConnector(dsn *dsn.Info) (driver.Connector, error) {
 	driverCtx, err := newCsContext(dsn)
 	if err != nil {
@@ -49,6 +50,7 @@ func NewConnector(dsn *dsn.Info) (driver.Connector, error) {
 	return c, nil
 }
 
+// Connect implements the driver.Connector interface.
 func (connector *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	connChan := make(chan driver.Conn, 1)
 	errChan := make(chan error, 1)
@@ -75,6 +77,7 @@ func (connector *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	}
 }
 
+// Driver implements the driver.Connector interface.
 func (connector connector) Driver() driver.Driver {
 	return drv
 }

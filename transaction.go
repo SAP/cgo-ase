@@ -16,7 +16,10 @@ import (
 	"github.com/SAP/go-dblib"
 )
 
-// transaction is the struct which represents a database transaction.
+// Interface satisfaction checks.
+var _ driver.Tx = (*transaction)(nil)
+
+// transaction implements the driver.Tx interface.
 type transaction struct {
 	conn *Connection
 	// ASE does not support read-only transactions - the connection
@@ -29,13 +32,12 @@ type transaction struct {
 	readonlyNeedsReset bool
 }
 
-// Interface satisfaction checks
-var _ driver.Tx = (*transaction)(nil)
-
+// Begin implements the driver.Conn interface.
 func (conn *Connection) Begin() (driver.Tx, error) {
 	return conn.beginTx(driver.TxOptions{Isolation: driver.IsolationLevel(sql.LevelDefault), ReadOnly: false})
 }
 
+// BeginTx implements the driver.ConnBeginTx interface.
 func (conn *Connection) BeginTx(ctx context.Context, opts driver.TxOptions) (driver.Tx, error) {
 	recvTx := make(chan driver.Tx, 1)
 	recvErr := make(chan error, 1)
@@ -66,6 +68,7 @@ func (conn *Connection) BeginTx(ctx context.Context, opts driver.TxOptions) (dri
 	}
 }
 
+// TODO: Add doc
 func (conn *Connection) beginTx(opts driver.TxOptions) (driver.Tx, error) {
 	isolationLevel, err := dblib.ASEIsolationLevelFromGo(sql.IsolationLevel(opts.Isolation))
 	if err != nil {
@@ -83,8 +86,7 @@ func (conn *Connection) beginTx(opts driver.TxOptions) (driver.Tx, error) {
 	}
 
 	var currentReadOnly C.CS_INT = C.CS_FALSE
-	retval := C.ct_con_props(tx.conn.conn, C.CS_GET, C.CS_PROP_READONLY, unsafe.Pointer(&currentReadOnly), C.CS_UNUSED, nil)
-	if retval != C.CS_SUCCEED {
+	if retval := C.ct_con_props(tx.conn.conn, C.CS_GET, C.CS_PROP_READONLY, unsafe.Pointer(&currentReadOnly), C.CS_UNUSED, nil); retval != C.CS_SUCCEED {
 		return nil, makeError(retval, "Failed to retrieve readonly property")
 	}
 
@@ -105,6 +107,7 @@ func (conn *Connection) beginTx(opts driver.TxOptions) (driver.Tx, error) {
 	return tx, nil
 }
 
+// Commit implements the driver.Tx interface.
 func (tx *transaction) Commit() error {
 	if _, err := tx.conn.Exec("COMMIT TRANSACTION", nil); err != nil {
 		return err
@@ -112,6 +115,7 @@ func (tx *transaction) Commit() error {
 	return tx.finish()
 }
 
+// Rollback implements the driver.Tx interface.
 func (tx *transaction) Rollback() error {
 	if _, err := tx.conn.Exec("ROLLBACK TRANSACTION", nil); err != nil {
 		return err
@@ -119,6 +123,7 @@ func (tx *transaction) Rollback() error {
 	return tx.finish()
 }
 
+// finish finishs the transaction.
 func (tx *transaction) finish() error {
 	if tx.readonlyNeedsReset {
 		if err := tx.setRO(tx.readonlyPreTx); err != nil {
@@ -129,6 +134,7 @@ func (tx *transaction) finish() error {
 	return nil
 }
 
+// setRO sets the transaction as Read-Only.
 func (tx *transaction) setRO(ro C.CS_INT) error {
 	retval := C.ct_con_props(tx.conn.conn, C.CS_SET, C.CS_PROP_READONLY, unsafe.Pointer(&ro), C.CS_UNUSED, nil)
 	if retval != C.CS_SUCCEED {

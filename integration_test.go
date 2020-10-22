@@ -14,6 +14,8 @@ import (
 	"github.com/SAP/go-dblib/integration"
 )
 
+// TestMain starts the integration tests by using the imported package
+// 'go-dblib/integration'.
 func TestMain(m *testing.M) {
 	if err := testMain(m); err != nil {
 		log.Fatal(err)

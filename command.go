@@ -16,11 +16,14 @@ import (
 	"unsafe"
 )
 
+// Command contains the C.command and indicates if that command is dynamic.
 type Command struct {
 	cmd       *C.CS_COMMAND
 	isDynamic bool
 }
 
+// GenericExec is the central method through which SQL statements are
+// sent to ASE.
 func (conn *Connection) GenericExec(ctx context.Context, query string, args []driver.NamedValue) (driver.Rows, driver.Result, error) {
 	if len(args) == 0 {
 		cmd, err := conn.NewCommand(ctx, query)
@@ -57,11 +60,12 @@ func (conn *Connection) GenericExec(ctx context.Context, query string, args []dr
 	return stmt.exec(ctx, args)
 }
 
+// NewCommand creates a new command.
 func (conn *Connection) NewCommand(ctx context.Context, query string) (*Command, error) {
 	return conn.exec(ctx, query)
 }
 
-// cancel cancels the current result set.
+// Cancel cancels the current result set.
 func (cmd *Command) Cancel() error {
 	retval := C.ct_cancel(nil, cmd.cmd, C.CS_CANCEL_ALL)
 	if retval != C.CS_SUCCEED {
@@ -71,7 +75,7 @@ func (cmd *Command) Cancel() error {
 	return nil
 }
 
-// drop deallocates the command.
+// Drop deallocates the command.
 func (cmd *Command) Drop() error {
 	retval := C.ct_cmd_drop(cmd.cmd)
 	if retval != C.CS_SUCCEED {

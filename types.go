@@ -8,10 +8,14 @@ import (
 	"github.com/SAP/go-dblib/asetypes"
 )
 
+// Generate ASETypes and type2string-function.
 //go:generate go run ./gen_types.go
+
+// ASEType is the byte-representation of an ASE-datatype.
 type ASEType byte
 
-// String satisfies the stringer interface.
+// String returns the ASEType as string and satisfies the
+// stringer interface.
 func (t ASEType) String() string {
 	s, ok := type2string[t]
 	if !ok {

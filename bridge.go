@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+// TODO: Add doc about what bridge.* accomplishes.
 package ase
 
 // #include "ctlib.h"

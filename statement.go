@@ -22,14 +22,7 @@ import (
 	"github.com/SAP/go-dblib/asetypes"
 )
 
-type statement struct {
-	name        string
-	argCount    int
-	cmd         *Command
-	columnTypes []ASEType
-}
-
-// Interface satisfaction checks
+// Interface satisfaction checks.
 var (
 	_ driver.Stmt              = (*statement)(nil)
 	_ driver.StmtExecContext   = (*statement)(nil)
@@ -37,19 +30,30 @@ var (
 	_ driver.NamedValueChecker = (*statement)(nil)
 )
 
+// statement implements the driver.Stmt interface.
+type statement struct {
+	name        string
+	argCount    int
+	cmd         *Command
+	columnTypes []ASEType
+}
+
 var (
 	statementCounter  uint
 	statementCounterM = sync.Mutex{}
 )
 
+// Prepare implements the driver.Conn interface.
 func (conn *Connection) Prepare(query string) (driver.Stmt, error) {
 	return conn.PrepareContext(context.Background(), query)
 }
 
+// PrepareContext implements the driver.ConnPrepareContext interface.
 func (conn *Connection) PrepareContext(ctx context.Context, query string) (driver.Stmt, error) {
 	return conn.prepare(ctx, query)
 }
 
+// TODO: Add doc
 func (conn *Connection) prepare(ctx context.Context, query string) (*statement, error) {
 	stmt := &statement{}
 
@@ -88,6 +92,7 @@ func (conn *Connection) prepare(ctx context.Context, query string) (*statement, 
 	return stmt, nil
 }
 
+// Close implements the driver.Stmt interface.
 func (stmt *statement) Close() error {
 	if stmt.cmd != nil {
 		name := C.CString(stmt.name)
@@ -114,10 +119,12 @@ func (stmt *statement) Close() error {
 	return nil
 }
 
+// NumInput implements the driver.Stmt interface.
 func (stmt *statement) NumInput() int {
 	return stmt.argCount
 }
 
+// TODO: Add doc
 func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Rows, *Result, error) {
 	if len(args) != stmt.argCount {
 		return nil, nil, fmt.Errorf("Mismatched argument count - expected %d, got %d",
@@ -281,24 +288,29 @@ func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Row
 	return stmt.cmd.ConsumeResponse(ctx)
 }
 
+// Exec implements the driver.Stmt interface.
 func (stmt *statement) Exec(args []driver.Value) (driver.Result, error) {
 	return stmt.ExecContext(context.Background(), dblib.ValuesToNamedValues(args))
 }
 
+// ExecContext implements the driver.StmtExecContext interface.
 func (stmt *statement) ExecContext(ctx context.Context, args []driver.NamedValue) (driver.Result, error) {
 	_, result, err := stmt.exec(ctx, args)
 	return result, err
 }
 
+// Query implements the driver.Stmt interface.
 func (stmt *statement) Query(args []driver.Value) (driver.Rows, error) {
 	return stmt.QueryContext(context.Background(), dblib.ValuesToNamedValues(args))
 }
 
+// QueryContext implements the driver.StmtQueryContext interface.
 func (stmt *statement) QueryContext(ctx context.Context, args []driver.NamedValue) (driver.Rows, error) {
 	rows, _, err := stmt.exec(ctx, args)
 	return rows, err
 }
 
+// TODO: Add doc
 func (stmt *statement) fillColumnTypes() error {
 	name := C.CString(stmt.name)
 	defer C.free(unsafe.Pointer(name))
@@ -354,6 +366,7 @@ func (stmt *statement) fillColumnTypes() error {
 	return nil
 }
 
+// CheckNamedValue implements the driver.NamedValueChecker interface.
 func (stmt statement) CheckNamedValue(named *driver.NamedValue) error {
 	index := named.Ordinal - 1
 	if index > len(stmt.columnTypes) {

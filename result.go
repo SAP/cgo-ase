@@ -9,19 +9,20 @@ import (
 	"errors"
 )
 
-//keep track of rows affected after inserts and updates
+// Interface satisfaction checks
+var _ driver.Result = Result{}
+
+// Result implements the driver.Result interface.
 type Result struct {
 	rowsAffected int64
 }
 
-// Interface satisfaction checks
-var _ driver.Result = Result{}
-
+// LastInsertId implements the driver.Result interface.
 func (result Result) LastInsertId() (int64, error) {
-	// TODO
 	return -1, errors.New("Feature not supported")
 }
 
+// RowsAffected implements the driver.Result interface.
 func (result Result) RowsAffected() (int64, error) {
 	return result.rowsAffected, nil
 }

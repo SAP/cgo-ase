@@ -19,13 +19,7 @@ import (
 	"github.com/SAP/go-dblib/dsn"
 )
 
-// connection is the struct which represents a database connection.
-type Connection struct {
-	conn      *C.CS_CONNECTION
-	driverCtx *csContext
-}
-
-// Interface satisfaction checks
+// Interface satisfaction checks.
 var (
 	_ driver.Conn               = (*Connection)(nil)
 	_ driver.ConnBeginTx        = (*Connection)(nil)
@@ -38,7 +32,13 @@ var (
 	_ driver.NamedValueChecker  = (*Connection)(nil)
 )
 
-// newConnection allocated initializes a new connection based on the
+// Connection implements the driver.Conn interface.
+type Connection struct {
+	conn      *C.CS_CONNECTION
+	driverCtx *csContext
+}
+
+// NewConnection allocates a new connection based on the
 // options in the dsn.
 //
 // If driverCtx is nil a new csContext will be initialized.
@@ -59,25 +59,20 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 		driverCtx: driverCtx,
 	}
 
-	retval := C.ct_con_alloc(driverCtx.ctx, &conn.conn)
-	if retval != C.CS_SUCCEED {
+	if retval := C.ct_con_alloc(driverCtx.ctx, &conn.conn); retval != C.CS_SUCCEED {
 		conn.Close()
 		return nil, makeError(retval, "C.ct_con_alloc failed")
 	}
 
 	// Set password encryption
 	cTrue := C.CS_TRUE
-	retval = C.ct_con_props(conn.conn, C.CS_SET, C.CS_SEC_EXTENDED_ENCRYPTION,
-		unsafe.Pointer(&cTrue), C.CS_UNUSED, nil)
-	if retval != C.CS_SUCCEED {
+	if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_SEC_EXTENDED_ENCRYPTION, unsafe.Pointer(&cTrue), C.CS_UNUSED, nil); retval != C.CS_SUCCEED {
 		conn.Close()
 		return nil, makeError(retval, "C.ct_con_props failed for CS_SEC_EXTENDED_ENCRYPTION")
 	}
 
 	cFalse := C.CS_FALSE
-	retval = C.ct_con_props(conn.conn, C.CS_SET, C.CS_SEC_NON_ENCRYPTION_RETRY,
-		unsafe.Pointer(&cFalse), C.CS_UNUSED, nil)
-	if retval != C.CS_SUCCEED {
+	if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_SEC_NON_ENCRYPTION_RETRY, unsafe.Pointer(&cFalse), C.CS_UNUSED, nil); retval != C.CS_SUCCEED {
 		conn.Close()
 		return nil, makeError(retval, "C.ct_con_props failed for CS_SEC_NON_ENCRYPTION_RETRY")
 	}
@@ -87,8 +82,7 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 		// Set userstorekey
 		userstorekey := unsafe.Pointer(C.CString(dsn.Userstorekey))
 		defer C.free(userstorekey)
-		retval = C.ct_con_props(conn.conn, C.CS_SET, C.CS_SECSTOREKEY, userstorekey, C.CS_NULLTERM, nil)
-		if retval != C.CS_SUCCEED {
+		if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_SECSTOREKEY, userstorekey, C.CS_NULLTERM, nil); retval != C.CS_SUCCEED {
 			conn.Close()
 			return nil, makeError(retval, "C.ct_con_props failed for C.CS_SECSTOREKEY")
 		}
@@ -96,8 +90,7 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 		// Set username.
 		username := unsafe.Pointer(C.CString(dsn.Username))
 		defer C.free(username)
-		retval = C.ct_con_props(conn.conn, C.CS_SET, C.CS_USERNAME, username, C.CS_NULLTERM, nil)
-		if retval != C.CS_SUCCEED {
+		if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_USERNAME, username, C.CS_NULLTERM, nil); retval != C.CS_SUCCEED {
 			conn.Close()
 			return nil, makeError(retval, "C.ct_con_props failed for CS_USERNAME")
 		}
@@ -105,8 +98,7 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 		// Set password.
 		password := unsafe.Pointer(C.CString(dsn.Password))
 		defer C.free(password)
-		retval = C.ct_con_props(conn.conn, C.CS_SET, C.CS_PASSWORD, password, C.CS_NULLTERM, nil)
-		if retval != C.CS_SUCCEED {
+		if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_PASSWORD, password, C.CS_NULLTERM, nil); retval != C.CS_SUCCEED {
 			conn.Close()
 			return nil, makeError(retval, "C.ct_con_props failed for CS_PASSWORD")
 		}
@@ -124,15 +116,13 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 		ptrHostport := unsafe.Pointer(C.CString(strHostport))
 		defer C.free(ptrHostport)
 
-		retval = C.ct_con_props(conn.conn, C.CS_SET, C.CS_SERVERADDR, ptrHostport, C.CS_NULLTERM, nil)
-		if retval != C.CS_SUCCEED {
+		if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_SERVERADDR, ptrHostport, C.CS_NULLTERM, nil); retval != C.CS_SUCCEED {
 			conn.Close()
 			return nil, makeError(retval, "C.ct_con_props failed for CS_SERVERADDR")
 		}
 	}
 
-	retval = C.ct_connect(conn.conn, nil, 0)
-	if retval != C.CS_SUCCEED {
+	if retval := C.ct_connect(conn.conn, nil, 0); retval != C.CS_SUCCEED {
 		conn.Close()
 		return nil, makeError(retval, "C.ct_connect failed")
 	}
@@ -148,7 +138,8 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 	return conn, nil
 }
 
-// Close closes and deallocates a connection.
+// Close implements the driver.Conn interface. It closes and deallocates
+// a connection.
 func (conn *Connection) Close() error {
 	// Call context.drop when exiting this function to decrease the
 	// connection counter and potentially deallocate the context.
@@ -168,6 +159,7 @@ func (conn *Connection) Close() error {
 	return nil
 }
 
+// Ping implements the driver.Pinger interface.
 func (conn *Connection) Ping(ctx context.Context) error {
 	rows, err := conn.QueryContext(ctx, "SELECT 'PING'", nil)
 	if err != nil {
@@ -191,24 +183,29 @@ func (conn *Connection) Ping(ctx context.Context) error {
 	return nil
 }
 
+// Exec implements the driver.Execer interface.
 func (conn *Connection) Exec(query string, args []driver.Value) (driver.Result, error) {
 	return conn.ExecContext(context.Background(), query, dblib.ValuesToNamedValues(args))
 }
 
+// ExecContext implements the driver.ExecerContext interface.
 func (conn *Connection) ExecContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Result, error) {
 	_, result, err := conn.GenericExec(ctx, query, args)
 	return result, err
 }
 
+// Query implements the driver.Queryer interface.
 func (conn *Connection) Query(query string, args []driver.Value) (driver.Rows, error) {
 	return conn.QueryContext(context.Background(), query, dblib.ValuesToNamedValues(args))
 }
 
+// QueryContext implements the driver.QueryerContext interface.
 func (conn *Connection) QueryContext(ctx context.Context, query string, args []driver.NamedValue) (driver.Rows, error) {
 	rows, _, err := conn.GenericExec(ctx, query, args)
 	return rows, err
 }
 
+// CheckNamedValue implements the driver.NamedValueChecker interface.
 func (conn *Connection) CheckNamedValue(nv *driver.NamedValue) error {
 	v, err := asetypes.DefaultValueConverter.ConvertValue(nv.Value)
 	if err != nil {

@@ -41,14 +41,17 @@ func newServerMessage(msg *C.CS_SERVERMSG) *ServerMessage {
 	}
 }
 
+// MessageNumber returns the message-number of a server-message.
 func (msg ServerMessage) MessageNumber() uint64 {
 	return msg.MsgNumber
 }
 
+// MessageSeverity returns the message-severity of a server-message.
 func (msg ServerMessage) MessageSeverity() int64 {
 	return msg.Severity
 }
 
+// Content returns the message-content of a server-message.
 func (msg ServerMessage) Content() string {
 	return msg.Text
 }
@@ -76,14 +79,17 @@ func newClientMessage(msg *C.CS_CLIENTMSG) *ClientMessage {
 	}
 }
 
+// MessageNumber returns the message-number of a client-message.
 func (msg ClientMessage) MessageNumber() uint64 {
 	return msg.MsgNumber
 }
 
+// MessageSeverity returns the message-severity of a client-message.
 func (msg ClientMessage) MessageSeverity() int64 {
 	return msg.Severity
 }
 
+// Content returns the message-content of a client-message.
 func (msg ClientMessage) Content() string {
 	return msg.Text
 }

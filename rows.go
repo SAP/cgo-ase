@@ -20,7 +20,17 @@ import (
 	"github.com/SAP/go-dblib/asetypes"
 )
 
-// Rows is the struct which represents a database result set
+// Interface satisfaction checks.
+var (
+	_ driver.Rows                           = (*Rows)(nil)
+	_ driver.RowsColumnTypeDatabaseTypeName = (*Rows)(nil)
+	_ driver.RowsColumnTypeLength           = (*Rows)(nil)
+	_ driver.RowsColumnTypeNullable         = (*Rows)(nil)
+	_ driver.RowsColumnTypePrecisionScale   = (*Rows)(nil)
+	_ driver.RowsColumnTypeScanType         = (*Rows)(nil)
+)
+
+// Rows implements the driver.Rows interface.
 type Rows struct {
 	cmd *Command
 
@@ -39,16 +49,7 @@ type Rows struct {
 	colData []unsafe.Pointer
 }
 
-// Interface satisfaction checks
-var (
-	_ driver.Rows                           = (*Rows)(nil)
-	_ driver.RowsColumnTypeDatabaseTypeName = (*Rows)(nil)
-	_ driver.RowsColumnTypeLength           = (*Rows)(nil)
-	_ driver.RowsColumnTypeNullable         = (*Rows)(nil)
-	_ driver.RowsColumnTypePrecisionScale   = (*Rows)(nil)
-	_ driver.RowsColumnTypeScanType         = (*Rows)(nil)
-)
-
+// TODO: Add doc
 func newRows(cmd *Command) (*Rows, error) {
 	var numCols C.CS_INT
 	retval := C.ct_res_info(cmd.cmd, C.CS_NUMDATA, unsafe.Pointer(&numCols), C.CS_UNUSED, nil)
@@ -114,6 +115,7 @@ func newRows(cmd *Command) (*Rows, error) {
 	return r, nil
 }
 
+// Close implements the driver.Rows interface.
 func (rows *Rows) Close() error {
 	for i := 0; i < rows.numCols; i++ {
 		if rows.dataFmts[i] != nil {
@@ -143,6 +145,7 @@ func (rows *Rows) Close() error {
 	return nil
 }
 
+// Columns implements the driver.Rows interface.
 func (rows *Rows) Columns() []string {
 	ret := make([]string, rows.numCols)
 
@@ -153,6 +156,7 @@ func (rows *Rows) Columns() []string {
 	return ret
 }
 
+// Next implements the driver.Rows interface.
 func (rows *Rows) Next(dest []driver.Value) error {
 	retval := C.ct_fetch(rows.cmd.cmd, C.CS_UNUSED, C.CS_UNUSED, C.CS_UNUSED, nil)
 	switch retval {
@@ -221,14 +225,20 @@ func (rows *Rows) Next(dest []driver.Value) error {
 	return nil
 }
 
+// ColumnTypeDatabaseTypeName implements the
+// driver.RowsColumnTypeDatabaseTypeName interface.
 func (rows *Rows) ColumnTypeDatabaseTypeName(index int) string {
 	return rows.colASEType[index].String()
 }
 
+// ColumnTypeNullable implements the driver.RowsColumnTypeNullable
+// interface.
 func (rows *Rows) ColumnTypeNullable(index int) (bool, bool) {
 	return (rows.dataFmts[index].status|C.CS_CANBENULL == C.CS_CANBENULL), true
 }
 
+// ColumnTypePrecisionScale implements the
+// driver.RowsColumnTypePrecisionScale interface.
 func (rows *Rows) ColumnTypePrecisionScale(index int) (int64, int64, bool) {
 	if rows.dataFmts[index].scale == 0 && rows.dataFmts[index].precision == 9 {
 		return 0, 0, false
@@ -237,6 +247,7 @@ func (rows *Rows) ColumnTypePrecisionScale(index int) (int64, int64, bool) {
 	return int64(rows.dataFmts[index].scale), int64(rows.dataFmts[index].precision), true
 }
 
+// ColumnTypeLength implements the driver.RowsColumnTypeLength interface.
 func (rows *Rows) ColumnTypeLength(index int) (int64, bool) {
 	switch rows.colASEType[index] {
 	case BINARY, IMAGE:
@@ -248,10 +259,13 @@ func (rows *Rows) ColumnTypeLength(index int) (int64, bool) {
 	}
 }
 
+// ColumnTypeMaxLength returns the maximum length of the
+// column-datatype.
 func (rows *Rows) ColumnTypeMaxLength(index int) int64 {
 	return int64(rows.dataFmts[index].maxlength)
 }
 
+// ColumnTypeScanType returns the datatype of the column.
 func (rows *Rows) ColumnTypeScanType(index int) reflect.Type {
 	return rows.colASEType[index].ToDataType().GoReflectType()
 }
