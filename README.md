@@ -74,8 +74,7 @@ func main() {
     }
     defer db.Close()
 
-    err = db.Ping()
-    if err != nil {
+    if err := db.Ping(); err != nil {
         log.Printf("Failed to ping database: %v", err)
         return
     }

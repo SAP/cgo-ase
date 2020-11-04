@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-// TODO: Add doc about what bridge.* accomplishes.
 package ase
 
 // #include "ctlib.h"
@@ -47,15 +46,15 @@ func logSrvMsg(msg Message) {
 		return
 	}
 
-	fmt.Fprintln(os.Stderr, "Server message:")
-	fmt.Fprintf(os.Stderr, "\tmsgnumber:   %d\n", srvMsg.MsgNumber)
-	fmt.Fprintf(os.Stderr, "\tstate:       %d\n", srvMsg.State)
-	fmt.Fprintf(os.Stderr, "\tseverity:    %d\n", srvMsg.Severity)
-	fmt.Fprintf(os.Stderr, "\ttext:        %s\n", srvMsg.Text)
-	fmt.Fprintf(os.Stderr, "\tserver:      %s\n", srvMsg.Server)
-	fmt.Fprintf(os.Stderr, "\tproc:        %s\n", srvMsg.Proc)
-	fmt.Fprintf(os.Stderr, "\tline:        %d\n", srvMsg.Line)
-	fmt.Fprintf(os.Stderr, "\tsqlstate:    %s\n", srvMsg.SQLState)
+	fmt.Fprintln(cbTarget, "Server message:")
+	fmt.Fprintf(cbTarget, "\tmsgnumber:   %d\n", srvMsg.MsgNumber)
+	fmt.Fprintf(cbTarget, "\tstate:       %d\n", srvMsg.State)
+	fmt.Fprintf(cbTarget, "\tseverity:    %d\n", srvMsg.Severity)
+	fmt.Fprintf(cbTarget, "\ttext:        %s\n", srvMsg.Text)
+	fmt.Fprintf(cbTarget, "\tserver:      %s\n", srvMsg.Server)
+	fmt.Fprintf(cbTarget, "\tproc:        %s\n", srvMsg.Proc)
+	fmt.Fprintf(cbTarget, "\tline:        %d\n", srvMsg.Line)
+	fmt.Fprintf(cbTarget, "\tsqlstate:    %s\n", srvMsg.SQLState)
 }
 
 // cltMsg is a callback function which will be called from C when the
@@ -78,12 +77,12 @@ func logCltMsg(msg Message) {
 		return
 	}
 
-	fmt.Fprintln(os.Stderr, "Client message:")
-	fmt.Fprintf(os.Stderr, "\tseverity:     %d\n", cltMsg.Severity)
-	fmt.Fprintf(os.Stderr, "\tmsgnumber:    %d\n", cltMsg.MsgNumber)
-	fmt.Fprintf(os.Stderr, "\tmsgstring:    %s\n", cltMsg.Text)
-	fmt.Fprintf(os.Stderr, "\tosnumber:     %d\n", cltMsg.OSNumber)
-	fmt.Fprintf(os.Stderr, "\tosstring:     %s\n", cltMsg.OSString)
-	fmt.Fprintf(os.Stderr, "\tstatus:       %d\n", cltMsg.Status)
-	fmt.Fprintf(os.Stderr, "\tsqlstate:     %s\n", cltMsg.SQLState)
+	fmt.Fprintln(cbTarget, "Client message:")
+	fmt.Fprintf(cbTarget, "\tseverity:     %d\n", cltMsg.Severity)
+	fmt.Fprintf(cbTarget, "\tmsgnumber:    %d\n", cltMsg.MsgNumber)
+	fmt.Fprintf(cbTarget, "\tmsgstring:    %s\n", cltMsg.Text)
+	fmt.Fprintf(cbTarget, "\tosnumber:     %d\n", cltMsg.OSNumber)
+	fmt.Fprintf(cbTarget, "\tosstring:     %s\n", cltMsg.OSString)
+	fmt.Fprintf(cbTarget, "\tstatus:       %d\n", cltMsg.Status)
+	fmt.Fprintf(cbTarget, "\tsqlstate:     %s\n", cltMsg.SQLState)
 }

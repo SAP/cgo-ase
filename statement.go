@@ -310,7 +310,6 @@ func (stmt *statement) QueryContext(ctx context.Context, args []driver.NamedValu
 	return rows, err
 }
 
-// TODO: Add doc
 func (stmt *statement) fillColumnTypes() error {
 	name := C.CString(stmt.name)
 	defer C.free(unsafe.Pointer(name))
