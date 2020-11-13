@@ -264,7 +264,7 @@ For details on how to contribute please see the
 ## License
 
 Copyright (c) 2019-2020 SAP SE or an SAP affiliate company. All rights reserved.
-This file is licensed under the Apache License 2.0 except as noted otherwise in the [LICENSE file](LICENSE).
+This file is licensed under the Apache License 2.0 except as noted otherwise in the [LICENSE file](LICENSES).
 
 [cgo]: https://golang.org/cmd/cgo
 [cl-sdk-install-guide]: https://help.sap.com/viewer/882ef48c7e9c4d6e845d98f34378db40/16.0.3.2/en-US
