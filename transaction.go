@@ -123,7 +123,7 @@ func (tx *transaction) Rollback() error {
 	return tx.finish()
 }
 
-// finish finishs the transaction.
+// finish finishes the transaction.
 func (tx *transaction) finish() error {
 	if tx.readonlyNeedsReset {
 		if err := tx.setRO(tx.readonlyPreTx); err != nil {
