@@ -8,6 +8,7 @@
 package ase
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"log"
 	"testing"
@@ -27,31 +28,60 @@ func testMain(m *testing.M) error {
 	GlobalServerMessageBroker.RegisterHandler(genMessageHandler())
 	GlobalClientMessageBroker.RegisterHandler(genMessageHandler())
 
-	simpleDSN, simpleTeardown, err := integration.DSN(false)
+	// Setup test for username/password
+	teardown, err := setup("username password", func(info *Info) {
+		info.Userstorekey = ""
+	})
 	if err != nil {
-		return fmt.Errorf("error setting up simple DSN: %w", err)
+		return err
 	}
-	defer simpleTeardown()
+	defer teardown()
 
-	if err := integration.RegisterDSN("username password", simpleDSN, NewConnector); err != nil {
-		return fmt.Errorf("error setting up simple database: %w", err)
-	}
-
-	userstoreDSN, userstoreTeardown, err := integration.DSN(true)
+	// Setup test with userkeystore
+	teardown, err = setup("userstorekey", func(info *Info) {
+		info.Username = ""
+		info.Password = ""
+	})
 	if err != nil {
-		return fmt.Errorf("error setting up userstore DSN: %w", err)
+		return err
 	}
-	defer userstoreTeardown()
-
-	if err := integration.RegisterDSN("userstorekey", userstoreDSN, NewConnector); err != nil {
-		return fmt.Errorf("error setting up userstore database: %w", err)
-	}
+	defer teardown()
 
 	if rc := m.Run(); rc != 0 {
 		return fmt.Errorf("tests failed with %d", rc)
 	}
 
 	return nil
+}
+
+// newConnector statisfies the integration.NewConnectorFn interface.
+func newConnector(info interface{}) (driver.Connector, error) {
+	return NewConnector(info.(*Info))
+}
+
+func setup(name string, infoMod func(*Info)) (func(), error) {
+	info, err := NewInfoWithEnv()
+	if err != nil {
+		return nil, err
+	}
+
+	infoMod(info)
+
+	if err := integration.SetupDB(info); err != nil {
+		return nil, err
+	}
+
+	deferFn := func() {
+		if err := integration.TeardownDB(info); err != nil {
+			log.Printf("error dropping database %q: %v", info.Database, err)
+		}
+	}
+
+	if err := integration.RegisterDSN(name, info, newConnector); err != nil {
+		return nil, fmt.Errorf("error setting up userstore database: %w", err)
+	}
+
+	return deferFn, nil
 }
 
 // Exact numeric integer

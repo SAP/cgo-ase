@@ -28,12 +28,12 @@ func DoMain() error {
 	ase.GlobalServerMessageBroker.RegisterHandler(recorder.HandleMessage)
 	ase.GlobalClientMessageBroker.RegisterHandler(recorder.HandleMessage)
 
-	dsn, err := dsn.NewInfoFromEnv("")
+	info, err := ase.NewInfoWithEnv()
 	if err != nil {
 		return fmt.Errorf("error reading DSN info from env: %w", err)
 	}
 
-	db, err := sql.Open("ase", dsn.AsSimple())
+	db, err := sql.Open("ase", dsn.FormatSimple(info))
 	if err != nil {
 		return fmt.Errorf("error opening database: %w", err)
 	}

@@ -17,7 +17,6 @@ import (
 
 	"github.com/SAP/go-dblib"
 	"github.com/SAP/go-dblib/asetypes"
-	"github.com/SAP/go-dblib/dsn"
 )
 
 // Interface satisfaction checks.
@@ -43,10 +42,10 @@ type Connection struct {
 // options in the dsn.
 //
 // If driverCtx is nil a new csContext will be initialized.
-func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
+func NewConnection(driverCtx *csContext, info *Info) (*Connection, error) {
 	if driverCtx == nil {
 		var err error
-		driverCtx, err = newCsContext(dsn)
+		driverCtx, err = newCsContext(info)
 		if err != nil {
 			return nil, fmt.Errorf("Failed to initialize context for conn: %w", err)
 		}
@@ -79,9 +78,9 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 	}
 
 	// Give preference to the user store key
-	if len(dsn.Userstorekey) > 0 {
+	if len(info.Userstorekey) > 0 {
 		// Set userstorekey
-		userstorekey := unsafe.Pointer(C.CString(dsn.Userstorekey))
+		userstorekey := unsafe.Pointer(C.CString(info.Userstorekey))
 		defer C.free(userstorekey)
 		if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_SECSTOREKEY, userstorekey, C.CS_NULLTERM, nil); retval != C.CS_SUCCEED {
 			conn.Close()
@@ -89,7 +88,7 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 		}
 	} else {
 		// Set username.
-		username := unsafe.Pointer(C.CString(dsn.Username))
+		username := unsafe.Pointer(C.CString(info.Username))
 		defer C.free(username)
 		if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_USERNAME, username, C.CS_NULLTERM, nil); retval != C.CS_SUCCEED {
 			conn.Close()
@@ -97,7 +96,7 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 		}
 
 		// Set password.
-		password := unsafe.Pointer(C.CString(dsn.Password))
+		password := unsafe.Pointer(C.CString(info.Password))
 		defer C.free(password)
 		if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_PASSWORD, password, C.CS_NULLTERM, nil); retval != C.CS_SUCCEED {
 			conn.Close()
@@ -105,13 +104,13 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 		}
 	}
 
-	if dsn.Host != "" && dsn.Port != "" {
+	if info.Host != "" && info.Port != "" {
 		// Set hostname and port as string, since it is modified if
 		// '-o ssl' is set.
-		strHostport := dsn.Host + " " + dsn.Port
+		strHostport := info.Host + " " + info.Port
 		// If '-o ssl='-option is set, add it to strHostport
-		if dsn.TLSHostname != "" {
-			strHostport += fmt.Sprintf("ssl=\"%s\"", dsn.TLSHostname)
+		if info.TLSHostname != "" {
+			strHostport += fmt.Sprintf("ssl=\"%s\"", info.TLSHostname)
 		}
 		// Create pointer
 		ptrHostport := unsafe.Pointer(C.CString(strHostport))
@@ -129,10 +128,10 @@ func NewConnection(driverCtx *csContext, dsn *dsn.Info) (*Connection, error) {
 	}
 
 	// Set database
-	if dsn.Database != "" {
-		if _, err := conn.Exec("use "+dsn.Database, nil); err != nil {
+	if info.Database != "" {
+		if _, err := conn.Exec("use "+info.Database, nil); err != nil {
 			conn.Close()
-			return nil, fmt.Errorf("Failed to connect to database %s: %w", dsn.Database, err)
+			return nil, fmt.Errorf("Failed to connect to database %s: %w", info.Database, err)
 		}
 	}
 
