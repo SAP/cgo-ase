@@ -39,11 +39,11 @@ After [installing the Client-Library SDK][cl-sdk-install-guide] the
 shared objects can be found in the folder `lib` at the chosen
 installation path.
 
-The headers are provided at `includes`.
+The headers are provided in the `includes` folder.
 
-Furthermore, the shared library [`go-dblib`][go-dblib] is required.
-It contains several packages, e.g. `dsn` to get and parse DSN-information
-(see [Configuration: Data Source Names](#data-source-names)).
+Aside from the shard object the cgo driver has no special requirements
+other than Go standard library and the third part modules listed in
+`go.mod`, e.g.  `github.com/SAP/go-dblib`.
 
 ## Download
 
@@ -167,17 +167,16 @@ import (
     "database/sql"
 
     "github.com/SAP/cgo-ase"
-    "github.com/SAP/go-dblib/dsn"
 )
 
 func main() {
-    d := dsn.NewDsnInfo()
-    d.Host = "hostname"
-    d.Port = "4901"
-    d.Username = "user"
-    d.Password = "pass"
+    info := ase.NewInfo()
+    info.Host = "hostname"
+    info.Port = "4901"
+    info.Username = "user"
+    info.Password = "pass"
 
-    connector, err := ase.NewConnector(*d)
+    connector, err := ase.NewConnector(info)
     if err != nil {
         log.Printf("Failed to create connector: %v", err)
         return
@@ -190,19 +189,15 @@ func main() {
     }
     defer db.Close()
 
-    err = db.Ping()
-    if err != nil {
+    if err := db.Ping(); err != nil {
         log.Printf("Failed to ping ASE: %v", err)
     }
 }
 ```
 
-Additional properties can be set by calling `d.ConnectProps.Add("prop1",
-"value1")` or `d.ConnectProps.Set("prop2", "value2")`.
-
 ### Properties
 
-##### cgo-callback-client
+##### log-client-msgs
 
 Recognized values: `yes` or any string
 
@@ -213,7 +208,7 @@ register your own message handler with the `GlobalClientMessageBroker`.
 
 When set to any other string the callback will not bet set.
 
-##### cgo-callback-server
+##### log-server-msgs
 
 Recognized values: `yes` or any string
 
