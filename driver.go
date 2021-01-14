@@ -40,20 +40,20 @@ func init() {
 
 // Open implements the driver.Driver interface.
 func (d *aseDrv) Open(name string) (driver.Conn, error) {
-	dsnInfo, err := dsn.ParseDSN(name)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to parse DSN: %w", err)
+	info := new(Info)
+	if err := dsn.Parse(name, info); err != nil {
+		return nil, fmt.Errorf("error parsing DSN: %w", err)
 	}
 
-	return NewConnection(nil, dsnInfo)
+	return NewConnection(nil, info)
 }
 
 // OpenConnector implements the driver.DriverContext interface.
-func (d *aseDrv) OpenConnector(dsnString string) (driver.Connector, error) {
-	dsnInfo, err := dsn.ParseDSN(dsnString)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to parse DSN: %w", err)
+func (d *aseDrv) OpenConnector(name string) (driver.Connector, error) {
+	info := new(Info)
+	if err := dsn.Parse(name, info); err != nil {
+		return nil, fmt.Errorf("error parsing DSN: %w", err)
 	}
 
-	return NewConnector(dsnInfo)
+	return NewConnector(info)
 }

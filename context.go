@@ -11,15 +11,13 @@ import "C"
 import (
 	"fmt"
 	"sync"
-
-	"github.com/SAP/go-dblib/dsn"
 )
 
 // context wraps C.CS_CONTEXT to ensure that the context is being closed
 // and deallocated after the last connection was closed.
 type csContext struct {
-	ctx *C.CS_CONTEXT
-	dsn *dsn.Info
+	ctx  *C.CS_CONTEXT
+	info *Info
 
 	// connections is a counter that keeps track of the number of
 	// connections using the context to communicate with an ASE
@@ -29,9 +27,9 @@ type csContext struct {
 	lock        sync.Mutex
 }
 
-func newCsContext(dsn *dsn.Info) (*csContext, error) {
+func newCsContext(info *Info) (*csContext, error) {
 	ctx := &csContext{}
-	ctx.dsn = dsn
+	ctx.info = info
 
 	if err := ctx.init(); err != nil {
 		return nil, err
@@ -88,7 +86,7 @@ func (context *csContext) init() error {
 		return makeError(retval, "C.ct_init failed")
 	}
 
-	if err := context.applyDSN(context.dsn); err != nil {
+	if err := context.applyDSN(context.info); err != nil {
 		return fmt.Errorf("Failed to apply DSN: %w", err)
 	}
 
@@ -111,7 +109,7 @@ func (context *csContext) drop() error {
 
 // applyDSN applies the relevant connection properties of a DSN to the
 // context.
-func (context *csContext) applyDSN(dsn *dsn.Info) error {
+func (context *csContext) applyDSN(info *Info) error {
 	if retval := C.ct_callback(context.ctx, nil, C.CS_SET, C.CS_CLIENTMSG_CB, C.ct_callback_client_message); retval != C.CS_SUCCEED {
 		return makeError(retval, "C.ct_callback failed for client messages")
 	}
@@ -120,11 +118,11 @@ func (context *csContext) applyDSN(dsn *dsn.Info) error {
 		return makeError(retval, "C.ct_callback failed for server messages")
 	}
 
-	if dsn.Prop("cgo-callback-client") == "yes" {
+	if info.LogClientMsgs {
 		GlobalClientMessageBroker.RegisterHandler(logCltMsg)
 	}
 
-	if dsn.Prop("cgo-callback-server") == "yes" {
+	if info.LogServerMsgs {
 		GlobalServerMessageBroker.RegisterHandler(logSrvMsg)
 	}
 

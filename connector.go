@@ -9,8 +9,6 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
-
-	"github.com/SAP/go-dblib/dsn"
 )
 
 // Interface satisfaction checks.
@@ -19,19 +17,19 @@ var _ driver.Connector = (*connector)(nil)
 // connector implements the driver.Connector interface.
 type connector struct {
 	driverCtx *csContext
-	dsn       *dsn.Info
+	info      *Info
 }
 
 // NewConnector returns a new connector with the passed configuration.
-func NewConnector(dsn *dsn.Info) (driver.Connector, error) {
-	driverCtx, err := newCsContext(dsn)
+func NewConnector(info *Info) (driver.Connector, error) {
+	driverCtx, err := newCsContext(info)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to initialize context: %w", err)
 	}
 
 	c := &connector{
 		driverCtx: driverCtx,
-		dsn:       dsn,
+		info:      info,
 	}
 
 	conn, err := c.Connect(context.Background())
@@ -56,7 +54,7 @@ func (connector *connector) Connect(ctx context.Context) (driver.Conn, error) {
 	connChan := make(chan driver.Conn, 1)
 	errChan := make(chan error, 1)
 	go func() {
-		conn, err := NewConnection(connector.driverCtx, connector.dsn)
+		conn, err := NewConnection(connector.driverCtx, connector.info)
 		connChan <- conn
 		close(connChan)
 		errChan <- err
