@@ -43,7 +43,7 @@ The headers are provided in the `includes` folder.
 
 Aside from the shared object the cgo driver has no special requirements
 other than Go standard library and the third party modules listed in
-`go.mod`, e.g.  `github.com/SAP/go-dblib`.
+`go.mod`, e.g. `github.com/SAP/go-dblib`.
 
 ## Download
 
