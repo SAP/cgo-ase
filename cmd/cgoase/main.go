@@ -57,7 +57,7 @@ func doMain() error {
 	}
 	defer db.Close()
 
-	return term.Entrypoint(db)
+	return term.Entrypoint(db, flags.Args())
 }
 
 func handleMessage(msg ase.Message) {
