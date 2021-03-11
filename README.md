@@ -96,7 +96,7 @@ CGO_LDFLAGS="-L/path/to/OCS/lib" go build -o cgoase ./cmd/cgoase/
 ### Execution
 
 ```sh
-LD_LIBRARY_PATH="/path/to/OCS/lib" ./cgoase
+LD_LIBRARY_PATH="/path/to/OCS/lib:/path/to/OCS/lib3p:/path/to/OCS/lib3p64:" ./cgoase
 ```
 
 ### Examples
