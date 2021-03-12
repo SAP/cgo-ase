@@ -96,8 +96,11 @@ CGO_LDFLAGS="-L/path/to/OCS/lib" go build -o cgoase ./cmd/cgoase/
 ### Execution
 
 ```sh
-LD_LIBRARY_PATH="/path/to/OCS/lib" ./cgoase
+LD_LIBRARY_PATH="/path/to/OCS/lib:/path/to/OCS/lib3p:/path/to/OCS/lib3p64:" ./cgoase
 ```
+
+While `/path/to/OCS/lib` contains the libraries of the Open Client, `/path/to/OCS/lib3p`
+and `/path/to/OCS/lib3p64` contain the libraries needed to use ASE user store keys.
 
 ### Examples
 
