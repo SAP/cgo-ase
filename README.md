@@ -200,6 +200,12 @@ func main() {
 
 ### Properties
 
+##### AppName / app-name
+
+Recognized values: string
+
+When set overrides Client-Libraries default application name sent to the
+ASE server.
 
 ##### Userstorekey / userstorekey
 

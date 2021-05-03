@@ -14,6 +14,8 @@ import (
 type Info struct {
 	dsn.Info
 
+	AppName string `json:"appname" doc:"Application Name to transmit to ASE"`
+
 	Userstorekey string `json:"key" multiref:"userstorekey" doc:"Key of userstore data to use for login"`
 
 	TLSHostname string `json:"tls-hostname" doc:"Expected server TLS hostname to pass to C driver"`
