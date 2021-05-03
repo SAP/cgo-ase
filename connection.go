@@ -122,6 +122,15 @@ func NewConnection(driverCtx *csContext, info *Info) (*Connection, error) {
 		}
 	}
 
+	if info.AppName != "" {
+		ptrAppName := unsafe.Pointer(C.CString(info.AppName))
+		defer C.free(ptrAppName)
+
+		if retval := C.ct_con_props(conn.conn, C.CS_SET, C.CS_APPNAME, ptrAppName, C.CS_NULLTERM, nil); retval != C.CS_SUCCEED {
+			return nil, makeError(retval, "C.ct_con_props failed for CS_APPNAME")
+		}
+	}
+
 	if retval := C.ct_connect(conn.conn, nil, 0); retval != C.CS_SUCCEED {
 		conn.Close()
 		return nil, makeError(retval, "C.ct_connect failed")
