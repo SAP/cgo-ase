@@ -200,27 +200,41 @@ func main() {
 
 ### Properties
 
-##### log-client-msgs
 
-Recognized values: `yes` or any string
+##### Userstorekey / userstorekey
 
-When set to `yes` all client messages will be printed to stderr.
+Recognized values: string
+
+When set uses the ASE userstore instead of username/password to
+authenticate with ASE.
+
+##### TLSHostname / tls-hostname
+
+Recognized values: string
+
+Expected server TLS hostname to pass to Client-Library for validation.
+
+##### LogClientMsgs / log-client-msgs
+
+Recognized values: `true` or `false`
+
+When set to `true` all client messages will be printed to stderr.
 
 Please note that this is a debug property - for logging you should
 register your own message handler with the `GlobalClientMessageBroker`.
 
-When set to any other string the callback will not bet set.
+When unset the callback will not bet set.
 
-##### log-server-msgs
+##### LogServerMsgs / log-server-msgs
 
-Recognized values: `yes` or any string
+Recognized values: `true` or `false`
 
-When set to `yes` all server messages will be printed to stderr.
+When set to `true` all server messages will be printed to stderr.
 
 Please note that this is a debug property - for logging you should
 register your own message handler with the `GlobalServerMessageBroker`.
 
-When set to any other string the callback will not be set.
+When unset the callback will not bet set.
 
 ## Limitations
 
