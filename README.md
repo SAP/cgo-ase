@@ -45,7 +45,7 @@ Aside from the shared object the cgo driver has no special requirements
 other than Go standard library and the third party modules listed in
 `go.mod`, e.g. `github.com/SAP/go-dblib`.
 
-## Download
+## Download and Installation
 
 The packages in this repo can be `go get` and imported as usual, e.g.:
 
@@ -55,6 +55,28 @@ go get github.com/SAP/cgo-ase
 
 For specifics on how to use `database/sql` please see the
 [documentation][pkg-database-sql].
+
+The command-line application `cgoase` can be `go install`ed:
+
+```sh
+$ go install github.com/SAP/cgo-ase/cmd/cgoase@latest
+go: downloading github.com/SAP/cgo-ase v0.0.0-20210506101112-3f277f8e0603
+$ cgoase -h
+Usage of cgoase:
+      --appname string        Application Name to transmit to ASE
+      --database string       Database
+  -f, --f string              Read SQL commands from file
+      --host string           Hostname to connect to
+      --key string            Key of userstore data to use for login
+      --log-client-msgs       Log client messages
+      --log-server-msgs       Log server messages
+      --maxColLength int      Maximum number of characters to print for column (default 50)
+      --password string       Password
+      --port string           Port (Example: '443' or 'tls') to connect to
+      --tls-hostname string   Expected server TLS hostname to pass to C driver
+      --username string       Username
+2021/05/06 11:00:22 cgoase failed: pflag: help requested
+```
 
 ## Usage
 
