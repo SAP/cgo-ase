@@ -10,7 +10,6 @@ package ase
 //#include "bridge.h"
 import "C"
 import (
-	"context"
 	"database/sql/driver"
 	"encoding/binary"
 	"fmt"
@@ -127,13 +126,9 @@ func (rows *Rows) Close() error {
 		}
 	}
 
-	newRows, _, err := rows.cmd.ConsumeResponse(context.Background())
-	if err != nil {
-		return err
-	}
-
-	if newRows != nil {
-		newRows.Close()
+	retval := C.ct_cancel(nil, rows.cmd.cmd, C.CS_CANCEL_ALL)
+	if retval != C.CS_SUCCEED {
+		return makeError(retval, "error cancelling command")
 	}
 
 	if !rows.cmd.isDynamic {
