@@ -135,5 +135,6 @@ func TestBit(t *testing.T) { integration.DoTestBit(t) }
 func TestImage(t *testing.T) { integration.DoTestImage(t) }
 
 // Routines
-func TestSQLTx(t *testing.T)   { integration.DoTestSQLTx(t) }
-func TestSQLExec(t *testing.T) { integration.DoTestSQLExec(t) }
+func TestSQLTx(t *testing.T)       { integration.DoTestSQLTx(t) }
+func TestSQLExec(t *testing.T)     { integration.DoTestSQLExec(t) }
+func TestSQLQueryRow(t *testing.T) { integration.DoTestSQLQueryRow(t) }
