@@ -31,7 +31,7 @@ jobs:
           packages: reuse
 
       # Generate
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: PATH="$(go env GOPATH)/bin:$PATH" make generate
       - run: |
           if [ "$(git status --porcelain | wc -l)" -ne 0 ]; then
@@ -44,5 +44,5 @@ jobs:
   license:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: fsfe/reuse-action@v1.1
