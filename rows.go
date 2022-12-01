@@ -188,7 +188,7 @@ func (rows *Rows) Next(dest []driver.Value) error {
 			csDec := (*C.CS_DECIMAL)(rows.colData[i])
 			bs := C.GoBytes(
 				unsafe.Pointer(&csDec.array),
-				(C.int)(asetypes.DecimalByteSize(int(csDec.precision))),
+				(C.int)(int(csDec.precision)),
 			)
 
 			decI, err := dataType.GoValue(binary.LittleEndian, bs)

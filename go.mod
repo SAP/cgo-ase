@@ -9,7 +9,7 @@ module github.com/SAP/cgo-ase
 go 1.19
 
 require (
-	github.com/SAP/go-dblib v0.0.0-20210811145943-b072f542367d
+	github.com/SAP/go-dblib v0.0.0-20221024093558-93e1f215139c
 	github.com/spf13/pflag v0.0.0-20170417173400-9e4c21054fa1
 )
 

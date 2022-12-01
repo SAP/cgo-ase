@@ -165,9 +165,10 @@ func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Row
 		// the values set here are always the same - the expected values
 		// for ct_param.
 		// This function could also check for null values early.
+		length := int64(stmt.columnTypes[i].ToDataType().LengthBytes())
 		switch stmt.columnTypes[i] {
 		case BIGINT, INT, SMALLINT, TINYINT, UBIGINT, UINT, USMALLINT, USHORT, FLOAT, REAL:
-			bs, err := dataType.Bytes(binary.LittleEndian, arg.Value)
+			bs, err := dataType.Bytes(binary.LittleEndian, arg.Value, length)
 			if err != nil {
 				// TODO context
 				return nil, nil, err
@@ -175,7 +176,7 @@ func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Row
 			ptr = C.CBytes(bs)
 			defer C.free(ptr)
 		case DECIMAL, NUMERIC:
-			bs, err := dataType.Bytes(binary.LittleEndian, arg.Value)
+			bs, err := dataType.Bytes(binary.LittleEndian, arg.Value, length)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -191,7 +192,7 @@ func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Row
 
 			ptr = unsafe.Pointer(csDec)
 		case MONEY, MONEY4, DATE, TIME, DATETIME4, DATETIME, BIGDATETIME, BIGTIME:
-			bs, err := dataType.Bytes(binary.LittleEndian, arg.Value)
+			bs, err := dataType.Bytes(binary.LittleEndian, arg.Value, length)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -254,7 +255,7 @@ func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Row
 			ptr = unsafe.Pointer(&b)
 			datalen = 1
 		case UNICHAR, UNITEXT:
-			bs, err := dataType.Bytes(binary.LittleEndian, arg.Value)
+			bs, err := dataType.Bytes(binary.LittleEndian, arg.Value, length)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -375,7 +376,9 @@ func (stmt statement) CheckNamedValue(named *driver.NamedValue) error {
 			named.Ordinal, len(stmt.columnTypes))
 	}
 
-	val, err := stmt.columnTypes[index].ToDataType().ConvertValue(named.Value)
+	converter := asetypes.DefaultValueConverter
+
+	val, err := converter.ConvertValue(named.Value)
 	if err != nil {
 		return fmt.Errorf("cgo-ase: error converting value: %w", err)
 	}
