@@ -166,6 +166,7 @@ func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Row
 		// for ct_param.
 		// This function could also check for null values early.
 		length := int64(stmt.columnTypes[i].ToDataType().LengthBytes())
+		fmt.Printf("Lenght of datatype from my code: %s", length)
 		switch stmt.columnTypes[i] {
 		case BIGINT, INT, SMALLINT, TINYINT, UBIGINT, UINT, USMALLINT, USHORT, FLOAT, REAL:
 			bs, err := dataType.Bytes(binary.LittleEndian, arg.Value, length)
