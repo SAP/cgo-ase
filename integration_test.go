@@ -4,11 +4,10 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-// +build integration
-
 package ase
 
 import (
+	"context"
 	"database/sql/driver"
 	"fmt"
 	"log"
@@ -68,12 +67,12 @@ func setup(name string, infoMod func(*Info)) (func(), error) {
 
 	infoMod(info)
 
-	if err := integration.SetupDB(info); err != nil {
+	if err := integration.SetupDB(context.Background(), info, "test"+integration.RandomNumber()); err != nil {
 		return nil, err
 	}
 
 	deferFn := func() {
-		if err := integration.TeardownDB(info); err != nil {
+		if err := integration.TeardownDB(context.Background(), info); err != nil {
 			log.Printf("error dropping database %q: %v", info.Database, err)
 		}
 	}
