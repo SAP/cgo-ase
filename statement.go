@@ -165,7 +165,7 @@ func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Row
 		// the values set here are always the same - the expected values
 		// for ct_param.
 		// This function could also check for null values early.
-		length := int64(stmt.columnTypes[i].ToDataType().LengthBytes())
+		length := int64(stmt.columnTypes[i].ToDataType().ByteSize())
 		fmt.Print("Lenght of datatype from my code:")
 		fmt.Print(length)
 		switch stmt.columnTypes[i] {
