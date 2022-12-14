@@ -166,11 +166,7 @@ func (stmt *statement) exec(ctx context.Context, args []driver.NamedValue) (*Row
 		// for ct_param.
 		// This function could also check for null values early.
 
-		fmt.Print("size")
-		size := int(unsafe.Sizeof(arg.Value))
-		fmt.Print(size)
-
-		length := int64(size)
+		length := int64(4)
 
 		switch stmt.columnTypes[i] {
 		case BIGINT, INT, SMALLINT, TINYINT, UBIGINT, UINT, USMALLINT, USHORT, FLOAT, REAL:
