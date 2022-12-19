@@ -23,7 +23,7 @@ jobs:
       # Setup go
       - uses: actions/checkout@v3
       - name: Set up Go
-        uses: actions/setup-go@v3.3.1
+        uses: actions/setup-go@v3.5.0
         with:
           go-version-file: 'go.mod'
       # govulncheck
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Setup stringer
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v3.5.0
       - run: go install golang.org/x/tools/cmd/stringer@latest
 
       # Setup python and reuse
