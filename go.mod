@@ -11,7 +11,7 @@ go 1.19
 
 require (
 	github.com/SAP/go-dblib v0.0.0-20210811145943-b072f542367d
-	github.com/spf13/pflag v0.0.0-20170417173400-9e4c21054fa1
+	github.com/spf13/pflag v1.0.5
 )
 
 require (
