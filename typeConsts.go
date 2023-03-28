@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022 SAP SE
+// SPDX-FileCopyrightText: 2023 SAP SE
 //
 // SPDX-License-Identifier: Apache-2.0
 
