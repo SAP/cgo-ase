@@ -64,7 +64,6 @@ There are three important things to know:
    Some features may fit better in a third-party package. The code
    overall must fit into the cgo-ase project.
 
-
 ### Contributor License Agreement
 
 When you contribute (code, documentation, or anything else), you have to
