@@ -1,16 +1,9 @@
 /*
+ * SPDX-FileCopyrightText: 2013 SAP AG or an SAP affiliate company.  All rights reserved.
  * SPDX-FileCopyrightText: 2020 - 2025 SAP SE
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-
-// Copyright (c) 2013 SAP AG or an SAP affiliate company.  All rights reserved.
-// SPDX-FileCopyrightText: 2020 SAP SE
-// SPDX-FileCopyrightText: 2021 SAP SE
-// SPDX-FileCopyrightText: 2022 SAP SE
-// SPDX-FileCopyrightText: 2023 SAP SE
-//
-// SPDX-License-Identifier: Apache-2.0
 
 /*
 ** ctpublic.h - This is the public header file for CT-Lib.
@@ -221,8 +214,8 @@ extern CS_RETCODE CS_PUBLIC ct_connect(
 	CS_INT snamelen
 	);
 extern CS_RETCODE CS_PUBLIC ct_connect_string(
-	CS_CONNECTION *connection, 
-	CS_CHAR *cnt_str, 
+	CS_CONNECTION *connection,
+	CS_CHAR *cnt_str,
 	CS_INT cnt_len
 	);
 
@@ -455,7 +448,7 @@ extern CS_RETCODE CS_PUBLIC ct_ds_lookup(
 /* ctdsdrop.c */
 extern CS_RETCODE CS_PUBLIC ct_ds_dropobj(
 	CS_CONNECTION	*connection,
-	CS_DS_OBJECT	*object 
+	CS_DS_OBJECT	*object
 	);
 /* ctdsobji.c */
 extern CS_RETCODE CS_PUBLIC ct_ds_objinfo(

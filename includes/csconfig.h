@@ -1,16 +1,9 @@
 /*
+ * SPDX-FileCopyrightText: 2013 SAP AG or an SAP affiliate company.  All rights reserved.
  * SPDX-FileCopyrightText: 2020 - 2025 SAP SE
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-
-// Copyright (c) 2013 SAP AG or an SAP affiliate company.  All rights reserved.
-// SPDX-FileCopyrightText: 2020 SAP SE
-// SPDX-FileCopyrightText: 2021 SAP SE
-// SPDX-FileCopyrightText: 2022 SAP SE
-// SPDX-FileCopyrightText: 2023 SAP SE
-//
-// SPDX-License-Identifier: Apache-2.0
 
 #ifndef __CSCONFIG_H__
 #define __CSCONFIG_H__
@@ -93,8 +86,8 @@ typedef void            CS_STATIC;
 /*
 ** Default defines for all other platform/compilers.
 */
-#define CS_PUBLIC		
-#define CS_INTERNAL 
+#define CS_PUBLIC
+#define CS_INTERNAL
 #define CS_VARARGS
 #define CS_STATIC       static
 
@@ -111,8 +104,8 @@ typedef void            CS_STATIC;
 #define CS_START_EXTERN_C	extern "C" {
 #define CS_END_EXTERN_C		}
 #else
-#define CS_START_EXTERN_C		
-#define CS_END_EXTERN_C		
+#define CS_START_EXTERN_C
+#define CS_END_EXTERN_C
 #endif /* defined(__cplusplus) */
 
 /*

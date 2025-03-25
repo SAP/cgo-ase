@@ -1,16 +1,9 @@
 /*
+ * SPDX-FileCopyrightText: 2013 SAP AG or an SAP affiliate company.  All rights reserved.
  * SPDX-FileCopyrightText: 2020 - 2025 SAP SE
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-
-// Copyright (c) 2013 SAP AG or an SAP affiliate company.  All rights reserved.
-// SPDX-FileCopyrightText: 2020 SAP SE
-// SPDX-FileCopyrightText: 2021 SAP SE
-// SPDX-FileCopyrightText: 2022 SAP SE
-// SPDX-FileCopyrightText: 2023 SAP SE
-//
-// SPDX-License-Identifier: Apache-2.0
 
 #ifndef __CSTYPES_H__
 #define __CSTYPES_H__
@@ -124,7 +117,7 @@
 #define CS_ENOCNVRT		(CS_RETCODE)(CS_EXTERNAL_ERR - 16)
 
 /*
-** Special returns for the new ct_scroll_fetch() API. For Scrollable 
+** Special returns for the new ct_scroll_fetch() API. For Scrollable
 ** Cursor only.
 */
 #define CS_SCROLL_CURSOR_ENDS	(CS_RETCODE)(CS_EXTERNAL_ERR - 17)
@@ -159,7 +152,7 @@
 #define CS_USEREP		(CS_RETCODE)(CS_CONV_ERR - 17)
 
 /*
-** Error Severities. 
+** Error Severities.
 */
 #define CS_SV_INFORM		(CS_INT)0
 #define CS_SV_API_FAIL		(CS_INT)1
@@ -173,13 +166,13 @@
 
 /*****************************************************************************
 **
-** Error numbers, and macros for extracting information from a 
+** Error numbers, and macros for extracting information from a
 ** Client-Library error number.
 **
 ** Error numbers are broken down into four components:
 **
 **	Layer		- Represents which layer is reporting the error.
-**	Origin		- Indicates where the error manifested itself. 
+**	Origin		- Indicates where the error manifested itself.
 **	Severity	- How bad is the error?
 **	Number		- The actual layer specific error number being
 **			  reported.
@@ -251,7 +244,7 @@ typedef long CS_MSGNUM;
 /*
 ** The maximum number of characters in arrays, including a null-terminator.
 ** Please note that this define does not correspond to any server definition
-** of lengths (particularly the length of the character data type, which 
+** of lengths (particularly the length of the character data type, which
 ** is 255 bytes for the SAP server).
 */
 #define CS_MAX_CHAR		(CS_INT)256
@@ -323,15 +316,15 @@ typedef long CS_MSGNUM;
 #define CS_BOUNDARY_TYPE	(CS_INT)22
 #define CS_VOID_TYPE		(CS_INT)23
 #define CS_USHORT_TYPE		(CS_INT)24
-#define CS_UNICHAR_TYPE		(CS_INT)25	
+#define CS_UNICHAR_TYPE		(CS_INT)25
 #define CS_BLOB_TYPE		(CS_INT)26
-#define CS_DATE_TYPE		(CS_INT)27	
-#define CS_TIME_TYPE		(CS_INT)28	
-#define CS_UNITEXT_TYPE		(CS_INT)29	
-#define CS_BIGINT_TYPE		(CS_INT)30	
-#define CS_USMALLINT_TYPE	(CS_INT)31	
-#define CS_UINT_TYPE		(CS_INT)32	
-#define CS_UBIGINT_TYPE		(CS_INT)33	
+#define CS_DATE_TYPE		(CS_INT)27
+#define CS_TIME_TYPE		(CS_INT)28
+#define CS_UNITEXT_TYPE		(CS_INT)29
+#define CS_BIGINT_TYPE		(CS_INT)30
+#define CS_USMALLINT_TYPE	(CS_INT)31
+#define CS_UINT_TYPE		(CS_INT)32
+#define CS_UBIGINT_TYPE		(CS_INT)33
 #define CS_XML_TYPE		(CS_INT)34
 #define CS_BIGDATETIME_TYPE	(CS_INT)35
 #define CS_BIGTIME_TYPE		(CS_INT)36
@@ -371,7 +364,7 @@ typedef long CS_MSGNUM;
 /*
 ** The following are bit values for the status field in the CS_DATAFMT
 ** structure.
-** 
+**
 ** CS_HIDDEN		Set if this column would normally be hidden
 **			from the user.
 **
@@ -386,7 +379,7 @@ typedef long CS_MSGNUM;
 **
 ** CS_CANBENULL		Set if the column can contain NULL values.
 **
-** CS_DESCIN		
+** CS_DESCIN
 ** CS_DESCOUT		Open Server-specific values for dynamic SQL.
 **
 ** CS_INPUTVALUE	Set if the parameter is an input parameter value
@@ -427,11 +420,11 @@ typedef long CS_MSGNUM;
 /*
 ** The following are bit values for the status field in the CS_BROWSEDESC
 ** structure.
-** 
+**
 ** CS_EXPRESSION	Set when the column is the result of an expression.
 **
-** CS_RENAMED		Set when that the column's heading is not the 
-**			original name of the column. 
+** CS_RENAMED		Set when that the column's heading is not the
+**			original name of the column.
 */
 #define CS_EXPRESSION		(CS_INT)0x800
 #define CS_RENAMED		(CS_INT)0x1000
@@ -581,7 +574,7 @@ typedef long CS_MSGNUM;
 
 /*
 ** Define client/server datatypes.
-** 
+**
 ** CS_INT is defined in csconfig.h
 ** CS_FLOAT is defined in csconfig.h
 ** CS_UINT is defined in csconfig.h
@@ -601,7 +594,7 @@ typedef unsigned char	CS_LONGBINARY;	/* long binary type */
 #if defined (_WIN64) || defined (SYB_LLP64)
 typedef __int64		CS_LONG;	/* long integer type */
 typedef unsigned __int64	CS_ULONG;	/* unsigned long integer type */
-#else		
+#else
 typedef long		CS_LONG;	/* long integer type */
 #endif
 typedef CS_INT		CS_VOIDDATA;	/* void data */
@@ -764,15 +757,15 @@ typedef struct _cs_daterec
 #ifndef CS_COMMAND
 #define CS_COMMAND	CS_VOID
 #endif /* CS_COMMAND */
- 
+
 #ifndef CS_DS_OBJECT
 #define CS_DS_OBJECT	CS_VOID
 #endif /* CS_DS_OBJECT */
- 
+
 #ifndef CS_DS_RESULT
 #define CS_DS_RESULT	CS_VOID
 #endif /* CS_DS_RESULT */
- 
+
 #ifndef CS_LOCATOR
 #define CS_LOCATOR	CS_VOID
 #endif /* CS_LOCATOR */
@@ -813,12 +806,12 @@ typedef struct _cslocator	CS_LOCATOR;	/* locator pointer type */
 ** format		The format field tells whether or not data
 **			should be padded to the full length of the
 **			variable. This will only be used if the type
-**			of the variable is character or binary. The 
+**			of the variable is character or binary. The
 ** 			format field also tells whether the data
 **			should be null-terminated (for char
 **			variables, only). This is a bit field in which
 **			the format values are or'd together.
-**	
+**
 ** maxlength		The max length the data might be.
 **
 ** scale		This is used if dataytype needs it (e.g.
@@ -839,7 +832,7 @@ typedef struct _cslocator	CS_LOCATOR;	/* locator pointer type */
 ** *locale		Pointer to the locale for this data.
 */
 #if defined(CS_NO_LARGE_IDENTIFIERS)
-/* 
+/*
 ** In pre-15.0 versions the (old) value for CS_MAX_NAME was used for the
 ** name array declarations. Starting from version 15.0, CS_MAX_CHAR is
 ** used to define these character array sizes.
@@ -876,39 +869,39 @@ typedef struct _cs_datafmt
 #endif
 
 /*
-** The object name structure used by Client-Library cs_object() API.	
+** The object name structure used by Client-Library cs_object() API.
 **
-** thinkexists 		indicates whether the application expects 
-**			this object to exist. 
+** thinkexists 		indicates whether the application expects
+**			this object to exist.
 **
-** object_type		The type of the object. This field is the 
+** object_type		The type of the object. This field is the
 **			first part of a 5-part key.
 **
-** last_name		The `last name' associated with the object of 
-**			interest, if any. This field is the second 
+** last_name		The `last name' associated with the object of
+**			interest, if any. This field is the second
 **			part of a 5-part key.
 **
 ** lnlen		The length, in bytes, of last_name.
 **
-** first_name		The `first name' associated with the object of 
-**			interest, if any. This field is the third part 
+** first_name		The `first name' associated with the object of
+**			interest, if any. This field is the third part
 **			of a 5-part key.
 **
 ** fnlen		The length, in bytes, of first_name.
 **
-** scope		Data that describes the scope of the object. 
+** scope		Data that describes the scope of the object.
 **			This field is the fourth part of a 5-part key.
 **
-** scopelen		The length, in bytes, of scope. 
+** scopelen		The length, in bytes, of scope.
 **
-** thread		Platform-specific data that is used to distinguish 
+** thread		Platform-specific data that is used to distinguish
 **			threads in a multi-threaded execution environment.
 **			This field is the fifth part of a 5-part key.
 **
-** threadlen		The length, in bytes, of thread. 
+** threadlen		The length, in bytes, of thread.
 */
 #if defined(CS_NO_LARGE_IDENTIFIERS)
-/* 
+/*
 ** In pre-15.0 versions the (old) value for CS_MAX_NAME was used for the
 ** name array declarations. Starting from version 15.0, CS_MAX_CHAR is
 ** used to define these character array sizes.
@@ -943,26 +936,26 @@ typedef struct _cs_objname
 #endif
 
 /*
-** The object data structure used by Client-Library cs_object() API.	
+** The object data structure used by Client-Library cs_object() API.
 **
-** actuallyexists	Indicates whether this object actually exists. 
-**			cs_objects sets actuallyexists to CS_TRUE 
-**			if it finds a matching object.  
-**			cs_objects sets actuallyexists to CS_FALSE 
+** actuallyexists	Indicates whether this object actually exists.
+**			cs_objects sets actuallyexists to CS_TRUE
+**			if it finds a matching object.
+**			cs_objects sets actuallyexists to CS_FALSE
 **			if it does not find a matching object.
 **
-** connection		A pointer to the CS_CONNECTION structure 
+** connection		A pointer to the CS_CONNECTION structure
 **			representing the connection in which the object exists.
 **
-** command		A pointer to the CS_COMMAND structure representing the 
-**			command space with which the object is associated, 
+** command		A pointer to the CS_COMMAND structure representing the
+**			command space with which the object is associated,
 **			if any.
 **
-** buffer		A pointer to data space. An application can 
+** buffer		A pointer to data space. An application can
 **			use buffer to associate data with a saved object.
 **
-** buflen		The length, in bytes, of *buffer. 
-** 
+** buflen		The length, in bytes, of *buffer.
+**
 */
 typedef struct _cs_objdata
 {
@@ -1130,7 +1123,7 @@ typedef struct _cs_string
 ** Transport Address attribute value
 **
 **	This structure is used to describe a server address attribute
-**	value. 
+**	value.
 **
 **	addr_accesstype		Access type provided on transport
 **				address.
@@ -1146,8 +1139,8 @@ typedef struct _cs_tranaddr
 
 /*
 ** Object Identifier
-**	
-**	This structure is used to represent an Object 
+**
+**	This structure is used to represent an Object
 **		Identifier.
 **
 **	oid_length	Length of Object Identifier.
@@ -1161,7 +1154,7 @@ typedef struct _cs_oid
 
 /*
 ** Attribute Value
-**	
+**
 **	This union is used to represent an attribute value.
 **
 */
@@ -1177,9 +1170,9 @@ typedef union _cs_attrvalue
 
 
 /*
-** Attribute 
-**	
-**	This structure describes an attribute. 
+** Attribute
+**
+**	This structure describes an attribute.
 **
 */
 typedef struct _cs_attribute
@@ -1201,7 +1194,7 @@ typedef struct _cs_attribute
 #define CS_ATTR_SYNTAX_OID		(CS_INT) 6
 
 
-/* 
+/*
 **	Structure for defining directory lookup criteria when using
 **	ct_ds_lookup api.
 */

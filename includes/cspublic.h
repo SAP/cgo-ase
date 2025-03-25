@@ -1,16 +1,9 @@
 /*
+ * SPDX-FileCopyrightText: 2013 SAP AG or an SAP affiliate company.  All rights reserved.
  * SPDX-FileCopyrightText: 2020 - 2025 SAP SE
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-
-// Copyright (c) 2013 SAP AG or an SAP affiliate company.  All rights reserved.
-// SPDX-FileCopyrightText: 2020 SAP SE
-// SPDX-FileCopyrightText: 2021 SAP SE
-// SPDX-FileCopyrightText: 2022 SAP SE
-// SPDX-FileCopyrightText: 2023 SAP SE
-//
-// SPDX-License-Identifier: Apache-2.0
 
 #ifndef __CSPUBLIC_H__
 #define __CSPUBLIC_H__
@@ -78,7 +71,7 @@
 *****************************************************************************/
 
 /*
-** Define all the library versions currently supported. 
+** Define all the library versions currently supported.
 ** If compile flag 'CS_NO_LARGE_IDENTIFIERS' is set, we need to use
 ** the old values for CS_VERSION_xxx for compatibility reasons.
 ** The compile flag 'CS_NO_LARGE_IDENTIFIERS' isn't supported anymore
@@ -118,7 +111,7 @@
 #define	CS_SEND			(CS_INT)39
 #define	CS_SUPPORTED		(CS_INT)40
 #define CS_CACHE                (CS_INT)41
- 
+
 /*
 ** Bind indicator values. These are preferred when passing data into
 ** Client Library or Server Library, since they add the appropriate cast.
@@ -159,7 +152,7 @@
 #define CS_CANCEL_ABORT_NOTIF	(CS_INT)6003
 
 /*
-** Cursor fetch options. 
+** Cursor fetch options.
 */
 #define CS_FIRST		(CS_INT)3000
 #define CS_NEXT			(CS_INT)3001
@@ -507,7 +500,7 @@
 #define CS_EXTERNAL_CONFIG	(CS_INT)9155
 #define CS_CONFIG_FILE		(CS_INT)9156
 #define CS_CONFIG_BY_SERVERNAME	(CS_INT)9157
- 
+
 /*
 ** Directory Service connection properties
 */
@@ -531,7 +524,7 @@
 #define CS_LOOP_DELAY 		(CS_INT)9174
 
 /*
-** Properties for Security services support 
+** Properties for Security services support
 */
 #define CS_SEC_NETWORKAUTH	(CS_INT)9175
 #define CS_SEC_DELEGATION	(CS_INT)9176
@@ -541,7 +534,7 @@
 #define CS_SEC_CREDTIMEOUT	(CS_INT)9180
 #define CS_SEC_SESSTIMEOUT	(CS_INT)9181
 #define CS_SEC_DETECTREPLAY	(CS_INT)9182
-#define CS_SEC_DETECTSEQ	(CS_INT)9183 
+#define CS_SEC_DETECTSEQ	(CS_INT)9183
 #define CS_SEC_DATAORIGIN	(CS_INT)9184
 #define CS_SEC_MECHANISM	(CS_INT)9185
 #define CS_SEC_CREDENTIALS	(CS_INT)9186
@@ -560,7 +553,7 @@
 #define CS_LOGIN_REMOTE_PASSWD	(CS_INT)9195
 
 /*
-** Property for HA failover 
+** Property for HA failover
 */
 #define CS_HAFAILOVER        	(CS_INT)9196
 
@@ -570,7 +563,7 @@
 #define CS_BEHAVIOR		(CS_INT)9197
 
 /*
-** Property for Directory services. (belongs with CS_DS_* above) 
+** Property for Directory services. (belongs with CS_DS_* above)
 ** Added at LDAP implementation time.
 */
 #define CS_DS_PASSWORD		(CS_INT)9198
@@ -609,7 +602,7 @@
 */
 #define	CS_PROP_APPLICATION_SPID	(CS_INT)9210
 
-/* 
+/*
 ** For ct_cmd_props(), scrollable cursor.
 ** CS_CUR_ROWPOSITION is reserved for future use.
 */
@@ -621,7 +614,7 @@
 */
 #define CS_SEC_EXTENDED_ENCRYPTION	(CS_INT)9213
 #define CS_SEC_NON_ENCRYPTION_RETRY	(CS_INT)9214
- 
+
 /*
 ** For connection migration
 */
@@ -720,7 +713,7 @@
 #define CS_SEARCH_OBJECT	(CS_INT)1
 #define CS_SEARCH_ONE_LEVEL	(CS_INT)2
 #define CS_SEARCH_SUBTREE	(CS_INT)3
- 
+
 /*
 ** Possible values for the CS_NETIO property.
 */
@@ -754,7 +747,7 @@
 #define CS_CURSTAT_KEYSETDRIVEN		(CS_INT)0x1000
 #define CS_CURSTAT_RELLOCKS_ONCLOSE	(CS_INT)0x2000
 
-/* 
+/*
 ** Possible bit values for implicit cursor status
 */
 #define CS_IMPCURSTAT_NONE		(CS_INT)0x0000
@@ -778,7 +771,7 @@
 /*
 ** Possible values for the CS_BEHAVIOR property.
 */
-#define CS_BEHAVIOR_080		(CS_INT)7369 
+#define CS_BEHAVIOR_080		(CS_INT)7369
 #define CS_BEHAVIOR_100		(CS_INT)7370
 #define CS_BEHAVIOR_110		(CS_INT)7371
 #define CS_BEHAVIOR_120		(CS_INT)7372
@@ -1052,7 +1045,7 @@ typedef CS_INT (CS_PUBLIC * CS_CERT_CB) (
 #define CS_OPT_IDENTITYUPD_ON	(CS_INT)5043	/* turn on identity update */
 #define CS_OPT_IDENTITYUPD_OFF	(CS_INT)5044	/* turn off identity update */
 #define CS_OPT_NODATA		(CS_INT)5045	/* turn on/off nodata option */
-#define CS_OPT_CIPHERTEXT	(CS_INT)5046	/* turn on/off ciphertext 
+#define CS_OPT_CIPHERTEXT	(CS_INT)5046	/* turn on/off ciphertext
 						** encryption */
 #define CS_OPT_SHOW_FI		(CS_INT)5047	/* Show Functional Indexes */
 #define CS_OPT_HIDE_VCC		(CS_INT)5048	/* Hide Virtual Computed Columns */
@@ -1067,15 +1060,15 @@ typedef CS_INT (CS_PUBLIC * CS_CERT_CB) (
 ** The supported options are summarized below with their defined values
 ** for `ArgSize' and `OptionArg'. ArgSize specifies the domain of valid
 ** values that are allowed.
-** 
+**
 ** Option			ArgSize		OptionArg
 ** ---------------		---------	---------
 ** CS_OPT_DATEFIRST 		1 byte		Defines below
-** CS_OPT_TEXTSIZE 		4 bytes		Size in bytes 
-** CS_OPT_ROWCOUNT  		4 bytes		Number of rows 
+** CS_OPT_TEXTSIZE 		4 bytes		Size in bytes
+** CS_OPT_ROWCOUNT  		4 bytes		Number of rows
 ** CS_OPT_NATLANG 		OptionArg Len	National Lang (string)
 ** CS_OPT_DATEFORMAT 		1 byte		Defines below
-** CS_OPT_ISOLATION 		1 byte		Defines below		
+** CS_OPT_ISOLATION 		1 byte		Defines below
 ** CS_OPT_AUTHON 		OptionArg Len	Table Name (string)
 ** CS_OPT_CHARSET 		OptionArg Len	Character set (string)
 ** CS_OPT_IDENTITYON 		OptionArg Len	Table Name (string)
@@ -1085,12 +1078,12 @@ typedef CS_INT (CS_PUBLIC * CS_CERT_CB) (
 ** CS_OPT_AUTHOFF 		OptionArg Len	Table Name (string)
 ** CS_OPT_IDENTITYUPD_ON 	OptionArg Len	Table Name (string)
 ** CS_OPT_IDENTITYUPD_OFF 	OptionArg Len	Table Name (string)
-** CS_OPT_ISOLATION_MODE	1 byte		Defines below		
+** CS_OPT_ISOLATION_MODE	1 byte		Defines below
 ** (All remaining options)	1 byte		Boolean value
-** 
+**
 ** All string values must be sent in 7 bit ASCII.
 **
-*/ 
+*/
 
 /* CS_OPT_DATEFIRST */
 #define CS_OPT_MONDAY		(CS_INT)1
@@ -1195,7 +1188,7 @@ typedef CS_INT (CS_PUBLIC * CS_CERT_CB) (
 #define CS_DATA_BITN			(CS_INT)50
 #define CS_OPTION_GET			(CS_INT)51
 #define CS_DATA_INT8			(CS_INT)52
-#define CS_DATA_VOID			(CS_INT)53	
+#define CS_DATA_VOID			(CS_INT)53
 #define CS_DOL_BULK			(CS_INT)54
 #define CS_OBJECT_JAVA1			(CS_INT)55
 #define CS_OBJECT_CHAR			(CS_INT)56
@@ -1345,7 +1338,7 @@ typedef CS_INT (CS_PUBLIC * CS_CERT_CB) (
 ** Minimum and maximum of all capabilities defined above.
 */
 #define CS_MIN_CAPVALUE		CS_REQ_LANG
-#define CS_MAX_CAPVALUE		CS_REQ_COMMAND_ENCRYPTION	
+#define CS_MAX_CAPVALUE		CS_REQ_COMMAND_ENCRYPTION
 
 /*
 ** Size of area to store capabilities. The array len must be greater
@@ -1435,7 +1428,7 @@ typedef	struct _cs_cap_type
 */
 typedef struct _csloginfo	CS_LOGINFO;
 typedef struct _cs_blkdesc	CS_BLKDESC;
-typedef	struct _bulkrow		CS_BLK_ROW; 
+typedef	struct _bulkrow		CS_BLK_ROW;
 
 #endif /* lint */
 
@@ -1514,7 +1507,7 @@ typedef struct _cs_iodesc
 /*
 ** Define the browse descriptor structure used by Open Client/Server.
 **
-** status		A bit mask of either CS_EXPRESSION and/or CS_RENAMED. 
+** status		A bit mask of either CS_EXPRESSION and/or CS_RENAMED.
 **
 ** isbrowse		CS_TRUE the column can be browse-mode updated.
 **
@@ -1571,7 +1564,7 @@ typedef struct _cs_browsedesc
 ** severity		The severity of the message.
 **
 ** text			The text of the error string. If an application
-**			is not sequencing messages, text is guaranteed 
+**			is not sequencing messages, text is guaranteed
 **			to be null-terminated, even if it has been
 **			truncated. If an application is sequencing
 **			messages, text is null-terminated only if it is
@@ -1604,7 +1597,7 @@ typedef struct _cs_browsedesc
 */
 #if defined(CS_NO_LARGE_IDENTIFIERS)
 /*
-** In pre-15.0 versions the (old) value for CS_MAX_NAME was used for the 
+** In pre-15.0 versions the (old) value for CS_MAX_NAME was used for the
 ** name array declarations. Starting from version 15.0, CS_MAX_CHAR is
 ** used to define these character array sizes.
 */
@@ -1909,21 +1902,21 @@ extern CS_RETCODE CS_PUBLIC cs_loc_drop(
 
 /* csstr.c */
 extern size_t CS_PUBLIC cs_strlcpy(
-	char *target_str, 
-	const char *source_str, 
+	char *target_str,
+	const char *source_str,
 	size_t target_size
 	);
 
 extern size_t CS_PUBLIC cs_strlcat(
-	char *target_str, 
-	const char *source_str, 
+	char *target_str,
+	const char *source_str,
 	size_t target_size
 	);
 
 extern void CS_PUBLIC cs_snprintf(
-	char *str, 
-	size_t size, 
-	const char *format, 
+	char *str,
+	size_t size,
+	const char *format,
 	...
 	);
 
@@ -1970,7 +1963,7 @@ extern CS_RETCODE CS_PUBLIC cs_time(
 extern CS_RETCODE CS_PUBLIC cs_manage_convert(
 	CS_CONTEXT	*context,
 	CS_INT		action,
-	CS_INT		srctype, 
+	CS_INT		srctype,
 	CS_CHAR		*srcname,
 	CS_INT		srcnamelen,
 	CS_INT		desttype,
@@ -1987,7 +1980,7 @@ extern CS_RETCODE CS_PUBLIC cs_conv_mult(
 	CS_LOCALE       *destloc,
 	CS_INT          *multiplier
 	);
-	
+
 CS_END_EXTERN_C
 
 #endif /* __CSPUBLIC_H__ */
