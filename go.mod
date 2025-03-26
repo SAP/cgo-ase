@@ -4,7 +4,7 @@
 
 module github.com/SAP/cgo-ase
 
-go 1.19
+go 1.21
 
 require (
 	github.com/SAP/go-dblib v0.0.0-20210811145943-b072f542367d
